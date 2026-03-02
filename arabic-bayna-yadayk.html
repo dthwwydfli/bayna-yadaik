@@ -1,0 +1,3608 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بين يديك | Bayna Yadayk Arabic Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Amiri:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F5E6C8;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --deep: #1A0F00;
+    --terracotta: #C4522A;
+    --teal: #2A7B7B;
+    --teal-light: #3AADAD;
+    --cream: #FDF6E9;
+    --text: #2C1A00;
+    --muted: #8B6B3D;
+    --success: #3D9A6B;
+    --error: #C4522A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--sand);
+  }
+
+  /* BACKGROUND TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(42,123,123,0.08) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* SCREENS */
+  .app-wrapper {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .screen {
+    display: none !important;
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--deep);
+  }
+  .screen.active { display: block !important; }
+  /* Screens with flex layout need flex restored when active */
+  #home.active,
+  #results.active {
+    display: flex !important;
+  }
+
+  /* ─── HOME SCREEN ─── */
+  #home {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 3rem 2rem 4rem;
+    text-align: center;
+  }
+
+  .logo-arabic {
+    font-family: 'Amiri', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    color: var(--gold);
+    line-height: 1;
+    text-shadow: 0 0 60px rgba(201,168,76,0.3);
+    margin-bottom: 0.2em;
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 40px rgba(201,168,76,0.2); }
+    to { text-shadow: 0 0 80px rgba(201,168,76,0.5), 0 0 120px rgba(201,168,76,0.2); }
+  }
+
+  .logo-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .ornament {
+    color: var(--gold);
+    font-size: 1.5rem;
+    opacity: 0.5;
+    margin: 0 1rem;
+  }
+
+  .home-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .progress-bar-container {
+    width: min(500px, 90vw);
+    background: rgba(255,255,255,0.05);
+    border-radius: 100px;
+    height: 8px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--teal-light));
+    border-radius: 100px;
+    transition: width 1s ease;
+  }
+
+  .progress-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    width: min(900px, 95vw);
+  }
+
+  .menu-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .menu-card:hover::before { opacity: 1; }
+
+  .menu-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(201,168,76,0.1);
+  }
+
+  .menu-card:active { transform: translateY(-2px); }
+
+  .card-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--sand);
+    margin-bottom: 0.4rem;
+  }
+  .card-desc { font-size: 0.8rem; color: var(--muted); }
+
+  /* BOOK SELECTOR */
+  .book-selector {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .book-btn {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+
+  .book-btn.active, .book-btn:hover {
+    background: var(--gold);
+    color: var(--deep);
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ─── FLASHCARD SCREEN ─── */
+  #flashcards {
+    min-height: 100vh;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .screen-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .back-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .back-btn:hover { color: var(--sand); border-color: var(--gold); }
+
+  .screen-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    flex: 1;
+  }
+
+  .flashcard-wrapper {
+    perspective: 1200px;
+    margin: 0 auto 2rem;
+    width: 100%;
+    max-width: 580px;
+  }
+
+  .flashcard {
+    width: 100%;
+    aspect-ratio: 3/2;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .card-front {
+    background: linear-gradient(135deg, #1E1205, #2A1800);
+    border: 1px solid rgba(201,168,76,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.15);
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, #0D2020, #152828);
+    border: 1px solid rgba(42,123,123,0.4);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    transform: rotateY(180deg);
+  }
+
+  .card-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .card-arabic {
+    font-family: 'Amiri', serif;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    color: var(--gold);
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-transliteration {
+    font-size: 1rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-category {
+    font-size: 0.75rem;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold);
+    padding: 0.2rem 0.8rem;
+    border-radius: 100px;
+  }
+
+  .card-english {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-weight: 600;
+    color: var(--sand);
+    text-align: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .card-example {
+    font-family: 'Amiri', serif;
+    font-size: 1.3rem;
+    color: var(--teal-light);
+    text-align: center;
+    direction: rtl;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-example-en {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+    font-style: italic;
+  }
+
+  .flip-hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .card-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .ctrl-btn {
+    padding: 0.8rem 1.8rem;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .ctrl-btn.hard {
+    background: rgba(196,82,42,0.15);
+    border: 1px solid rgba(196,82,42,0.4);
+    color: #E87A5A;
+  }
+
+  .ctrl-btn.hard:hover { background: rgba(196,82,42,0.3); }
+
+  .ctrl-btn.ok {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+  }
+
+  .ctrl-btn.ok:hover { background: rgba(201,168,76,0.2); }
+
+  .ctrl-btn.easy {
+    background: rgba(61,154,107,0.15);
+    border: 1px solid rgba(61,154,107,0.4);
+    color: #5ED4A0;
+  }
+
+  .ctrl-btn.easy:hover { background: rgba(61,154,107,0.25); }
+
+  .fc-progress {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+  }
+
+  .fc-counter {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .dots {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 300px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    transition: all 0.3s;
+  }
+
+  .dot.seen { background: var(--gold); }
+  .dot.current { background: var(--teal-light); transform: scale(1.3); }
+
+  /* ─── QUIZ SCREEN ─── */
+  #quiz {
+    min-height: 100vh;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .quiz-type-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .quiz-type-btn {
+    padding: 1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .quiz-type-btn:hover, .quiz-type-btn.active {
+    border-color: var(--gold);
+    color: var(--sand);
+    background: rgba(201,168,76,0.08);
+  }
+
+  .quiz-type-btn .qt-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .quiz-type-btn .qt-name { font-size: 0.85rem; font-weight: 600; }
+
+  /* MULTIPLE CHOICE */
+  .quiz-question-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .q-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .q-arabic {
+    font-family: 'Amiri', serif;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    direction: rtl;
+  }
+
+  .q-transliteration {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+
+  .q-prompt {
+    font-size: 1.1rem;
+    color: var(--sand);
+  }
+
+  .choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .choice-btn {
+    padding: 1rem 1.2rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    color: var(--sand);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.1);
+  }
+
+  .choice-btn.correct {
+    border-color: var(--success);
+    background: rgba(61,154,107,0.2);
+    color: #5ED4A0;
+  }
+
+  .choice-btn.wrong {
+    border-color: var(--error);
+    background: rgba(196,82,42,0.2);
+    color: #E87A5A;
+  }
+
+  .choice-btn:disabled { cursor: default; }
+
+  /* SENTENCE BUILDER */
+  .sentence-builder {
+    margin-bottom: 1.5rem;
+  }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    min-height: 60px;
+    padding: 1rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    align-content: flex-start;
+  }
+
+  .word-chip {
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'Amiri', serif;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .word-chip.available {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-light);
+  }
+
+  .word-chip.available:hover { background: rgba(201,168,76,0.2); transform: translateY(-2px); }
+
+  .word-chip.used {
+    background: rgba(42,123,123,0.15);
+    border: 1px solid rgba(42,123,123,0.3);
+    color: var(--teal-light);
+  }
+
+  .sentence-drop {
+    min-height: 60px;
+    padding: 1rem;
+    background: rgba(42,123,123,0.05);
+    border-radius: 12px;
+    border: 2px dashed rgba(42,123,123,0.3);
+    direction: rtl;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-content: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .sentence-placeholder {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.85rem;
+    font-style: italic;
+    align-self: center;
+    direction: ltr;
+  }
+
+  .translation-hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+  }
+
+  /* MATCHING */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .match-col { display: flex; flex-direction: column; gap: 0.6rem; }
+  .match-col-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    text-align: center;
+  }
+
+  .match-item {
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    border: 1px solid transparent;
+  }
+
+  .match-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 1.3rem;
+    background: rgba(201,168,76,0.07);
+    border-color: rgba(201,168,76,0.2);
+    color: var(--gold-light);
+  }
+
+  .match-arabic:hover, .match-arabic.selected {
+    background: rgba(201,168,76,0.2);
+    border-color: var(--gold);
+  }
+
+  .match-english {
+    font-size: 0.9rem;
+    background: rgba(42,123,123,0.07);
+    border-color: rgba(42,123,123,0.2);
+    color: var(--teal-light);
+  }
+
+  .match-english:hover, .match-english.selected {
+    background: rgba(42,123,123,0.2);
+    border-color: var(--teal-light);
+  }
+
+  .match-item.matched-correct {
+    background: rgba(61,154,107,0.2) !important;
+    border-color: var(--success) !important;
+    color: #5ED4A0 !important;
+    cursor: default;
+  }
+
+  .match-item.matched-wrong {
+    background: rgba(196,82,42,0.15) !important;
+    border-color: var(--error) !important;
+    animation: shake 0.3s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* FEEDBACK */
+  .feedback-panel {
+    padding: 1.2rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+
+  .feedback-panel.show { display: block; }
+  .feedback-panel.correct { background: rgba(61,154,107,0.15); border: 1px solid rgba(61,154,107,0.4); }
+  .feedback-panel.incorrect { background: rgba(196,82,42,0.1); border: 1px solid rgba(196,82,42,0.3); }
+
+  .feedback-emoji { font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .feedback-msg { font-weight: 600; margin-bottom: 0.3rem; }
+  .feedback-correct-ans { font-family: 'Amiri', serif; font-size: 1.2rem; color: var(--gold); }
+
+  .next-btn {
+    background: var(--gold);
+    color: var(--deep);
+    border: none;
+    padding: 0.9rem 2.5rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.2s;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .next-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(201,168,76,0.3); }
+
+  .quiz-score {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .score-item { text-align: center; }
+  .score-num { font-family: 'Playfair Display', serif; font-size: 2rem; }
+  .score-num.correct { color: #5ED4A0; }
+  .score-num.wrong { color: #E87A5A; }
+  .score-lbl { font-size: 0.75rem; color: var(--muted); }
+
+  /* VOCABULARY LIST */
+  #vocab-list {
+    min-height: 100vh;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .search-bar {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    color: var(--sand);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus { border-color: var(--gold); }
+  .search-input::placeholder { color: var(--muted); }
+
+  .filter-btn {
+    padding: 0.6rem 1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--gold);
+    color: var(--sand);
+    background: rgba(201,168,76,0.1);
+  }
+
+  .vocab-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .vocab-ar {
+    font-family: 'Amiri', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    direction: rtl;
+  }
+
+  .vocab-trans { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+  .vocab-en { font-size: 0.9rem; color: var(--sand); }
+
+  .vocab-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .badge-noun { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+  .badge-verb { background: rgba(42,123,123,0.1); color: var(--teal-light); border: 1px solid rgba(42,123,123,0.3); }
+  .badge-adj { background: rgba(196,82,42,0.1); color: #E8A07A; border: 1px solid rgba(196,82,42,0.2); }
+  .badge-phrase { background: rgba(100,80,150,0.1); color: #B09AE0; border: 1px solid rgba(100,80,150,0.2); }
+  .badge-prep { background: rgba(50,130,80,0.1); color: #80D4A0; border: 1px solid rgba(50,130,80,0.2); }
+
+  /* SCHEDULE */
+  #schedule {
+    min-height: 100vh;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .schedule-grid {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .week-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .week-header:hover { background: rgba(255,255,255,0.03); }
+
+  .week-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    min-width: 2rem;
+  }
+
+  .week-info { flex: 1; }
+  .week-title { font-weight: 600; color: var(--sand); margin-bottom: 0.2rem; }
+  .week-dates { font-size: 0.8rem; color: var(--muted); }
+
+  .week-progress-mini {
+    width: 80px;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .week-progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 100px;
+  }
+
+  .week-content {
+    padding: 0 1.5rem 1rem;
+    display: none;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .week-content.open { display: block; }
+
+  .unit-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    background: rgba(42,123,123,0.1);
+    border: 1px solid rgba(42,123,123,0.2);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--teal-light);
+    margin: 0.8rem 0 0.5rem;
+  }
+
+  .daily-goal {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* RESULTS SCREEN */
+  #results {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .result-emoji { font-size: 5rem; margin-bottom: 1rem; }
+  .result-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: var(--gold);
+    font-weight: 900;
+  }
+  .result-label { font-size: 1.2rem; color: var(--muted); margin-bottom: 2rem; }
+  .result-breakdown {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--deep);
+    border: none;
+    padding: 0.9rem 2.5rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.2s;
+    margin: 0.4rem;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(201,168,76,0.3); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.9rem 2.5rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s;
+    margin: 0.4rem;
+  }
+
+  .btn-secondary:hover { border-color: var(--gold); color: var(--sand); }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    animation: confettiFall 3s ease-in forwards;
+    z-index: 100;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--deep);
+    border: 1px solid var(--gold);
+    color: var(--sand);
+    padding: 0.8rem 1.5rem;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    z-index: 200;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* STREAK */
+  .streak-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: inline-flex;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .choices { grid-template-columns: 1fr; }
+    .match-grid { grid-template-columns: 1fr; }
+    .vocab-row { grid-template-columns: 1fr 1fr; font-size: 0.85rem; }
+    .vocab-row .vocab-ar { grid-column: 1 / -1; }
+  }
+
+  /* ─── ADD VOCAB SCREEN ─── */
+  #add-vocab {
+    min-height: 100%;
+    padding: 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .add-vocab-form {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  .form-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  .form-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    color: var(--sand);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-input.arabic-input {
+    font-family: 'Amiri', serif;
+    font-size: 1.3rem;
+    direction: rtl;
+    text-align: right;
+  }
+
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: rgba(139,107,61,0.6); }
+
+  .form-select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    color: var(--sand);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .form-select:focus { border-color: var(--gold); }
+
+  .form-select option {
+    background: #1A0F00;
+    color: var(--sand);
+  }
+
+  .add-btn {
+    background: var(--gold);
+    color: var(--deep);
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.2s;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .add-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(201,168,76,0.3); }
+
+  .custom-words-list {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .custom-word-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .custom-word-row:hover { border-color: rgba(201,168,76,0.2); }
+
+  .cw-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    direction: rtl;
+    min-width: 80px;
+  }
+
+  .cw-info { flex: 1; }
+  .cw-english { font-size: 0.9rem; color: var(--sand); }
+  .cw-trans { font-size: 0.75rem; color: var(--muted); font-style: italic; }
+
+  .cw-delete {
+    background: rgba(196,82,42,0.1);
+    border: 1px solid rgba(196,82,42,0.2);
+    color: #E87A5A;
+    border-radius: 8px;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .cw-delete:hover { background: rgba(196,82,42,0.25); }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--muted);
+  }
+
+  .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-state-msg { font-size: 0.9rem; line-height: 1.6; }
+
+  .custom-count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(42,123,123,0.1);
+    border: 1px solid rgba(42,123,123,0.25);
+    color: var(--teal-light);
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+  }
+
+
+  /* ─── VOCAB UNIT GROUPING ─── */
+  .vocab-unit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 0.8rem;
+    user-select: none;
+  }
+
+  .vocab-unit-header:first-child { margin-top: 0; }
+
+  .vocab-unit-header:hover {
+    background: rgba(201,168,76,0.12);
+    border-color: rgba(201,168,76,0.35);
+  }
+
+  .vuh-left { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; flex: 1; min-width: 0; }
+
+  .vuh-book {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(201,168,76,0.12);
+    padding: 0.15rem 0.6rem;
+    border-radius: 100px;
+    border: 1px solid rgba(201,168,76,0.25);
+    white-space: nowrap;
+  }
+
+  .vuh-title {
+    font-size: 0.9rem;
+    color: var(--sand);
+    font-weight: 500;
+    flex-shrink: 1;
+  }
+
+  .vuh-right {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .vuh-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .vuh-arrow {
+    font-size: 0.7rem;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+
+  .vocab-unit-body {
+    display: none;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.5rem 0 0.2rem 0.5rem;
+    border-left: 2px solid rgba(201,168,76,0.15);
+    margin-left: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .vocab-unit-body.open { display: flex; }
+
+  .vocab-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 1.4fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .vocab-row:hover {
+    border-color: rgba(201,168,76,0.15);
+    background: rgba(255,255,255,0.035);
+  }
+
+  @media (max-width: 600px) {
+    .vocab-row {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+    }
+    .vocab-row > div:nth-child(3) { grid-column: 1 / -1; }
+    .vuh-title { font-size: 0.78rem; }
+  }
+
+
+  /* ─── FLASHCARD UNIT LABEL ─── */
+  .card-unit-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    text-align: center;
+    padding: 0.2rem 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.07);
+    max-width: 90%;
+  }
+
+  /* ─── LISTEN BUTTON ON CARD ─── */
+  .card-listen-btn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s, transform 0.2s;
+    user-select: none;
+    padding: 0.3rem;
+  }
+  .card-listen-btn:hover { opacity: 1; transform: scale(1.2); }
+
+  /* ─── HOME EXTRAS ROW ─── */
+  .home-extras {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* DAILY GOAL RING */
+  .daily-goal-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    min-width: 100px;
+  }
+  .goal-ring-svg {
+    width: 60px;
+    height: 60px;
+    position: relative;
+  }
+  .goal-ring-inner {
+    position: relative;
+    margin-top: -48px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .goal-ring-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-align: center;
+  }
+  .goal-ring-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .goal-change-btns {
+    display: flex;
+    gap: 0.3rem;
+    margin-top: 0.3rem;
+  }
+  .goal-change-btns button {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    border-radius: 6px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1;
+    transition: all 0.2s;
+  }
+  .goal-change-btns button:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* EGYPT COUNTDOWN */
+  .egypt-countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    min-width: 100px;
+  }
+  .egypt-flag { font-size: 2rem; }
+  .egypt-days {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .egypt-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  /* WEAK WORDS WIDGET */
+  .weak-words-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(196,82,42,0.2);
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 100px;
+  }
+  .weak-words-widget:hover { border-color: rgba(196,82,42,0.5); background: rgba(196,82,42,0.07); }
+  .weak-icon { font-size: 1.5rem; }
+  .weak-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #E87A5A;
+    line-height: 1;
+  }
+  .weak-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .weak-sub {
+    font-size: 0.65rem;
+    color: rgba(232,122,90,0.6);
+  }
+
+  /* ─── PHRASEBOOK ─── */
+  .phrase-section { margin-bottom: 0.8rem; }
+
+  .phrase-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.2rem;
+    background: rgba(42,123,123,0.08);
+    border: 1px solid rgba(42,123,123,0.25);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--teal-light);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .phrase-section-header:hover { background: rgba(42,123,123,0.15); }
+
+  .phrase-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .phrase-section-body {
+    display: none;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.5rem 0 0.2rem 0.5rem;
+    border-left: 2px solid rgba(42,123,123,0.2);
+    margin-left: 0.3rem;
+  }
+  .phrase-section-body.open { display: flex; }
+
+  .phrase-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+  .phrase-row:hover { border-color: rgba(42,123,123,0.2); }
+
+  .phrase-ar {
+    font-family: 'Amiri', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    direction: rtl;
+    min-width: 120px;
+    text-align: right;
+  }
+
+  .phrase-info { flex: 1; }
+  .phrase-en { font-size: 0.9rem; color: var(--sand); margin-bottom: 0.1rem; }
+  .phrase-tr { font-size: 0.75rem; color: var(--muted); font-style: italic; }
+
+  .phrase-listen {
+    background: rgba(42,123,123,0.1);
+    border: 1px solid rgba(42,123,123,0.3);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .phrase-listen:hover { background: rgba(42,123,123,0.25); transform: scale(1.1); }
+
+  @media (max-width: 500px) {
+    .phrase-ar { min-width: 80px; font-size: 1.1rem; }
+    .home-extras { gap: 0.6rem; }
+    .daily-goal-widget, .egypt-countdown, .weak-words-widget { padding: 0.8rem; min-width: 80px; }
+    .egypt-days, .weak-num { font-size: 1.6rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HOME ═══════════════════════ -->
+<div class="app-wrapper">
+<div id="home" class="screen active">
+  <div class="logo-arabic">بين يديك</div>
+  <div class="logo-sub"><span class="ornament">✦</span> Bayna Yadayk Mastery <span class="ornament">✦</span></div>
+
+  <div style="margin-bottom:1rem">
+    <div class="streak-banner">🔥 <span id="streak-count">0</span> day streak — keep going!</div>
+  </div>
+
+  <div class="home-stats">
+    <div class="stat-item">
+      <span class="stat-number" id="stat-words">0</span>
+      <span class="stat-label">Words Learned</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" id="stat-quizzes">0</span>
+      <span class="stat-label">Quizzes Done</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" id="stat-accuracy">—</span>
+      <span class="stat-label">Accuracy</span>
+    </div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="main-progress" style="width:0%"></div>
+  </div>
+  <div class="progress-label" id="main-progress-label">Start studying to track your journey to Egypt! 🇪🇬</div>
+
+  <div class="book-selector" style="margin-bottom:1.5rem">
+    <button class="book-btn active" onclick="setBook(1)">Book 1</button>
+    <button class="book-btn" onclick="setBook(2)">Book 2</button>
+    <button class="book-btn" onclick="setBook(3)">Book 3</button>
+    <button class="book-btn" onclick="setBook(4)">Book 4</button>
+    <button class="book-btn" onclick="setBook('all')">All Books</button>
+  </div>
+
+  <div class="home-extras">
+    <!-- Daily Goal Ring -->
+    <div class="daily-goal-widget">
+      <svg viewBox="0 0 50 50" class="goal-ring-svg">
+        <circle cx="25" cy="25" r="20" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="4"/>
+        <circle id="daily-goal-ring" cx="25" cy="25" r="20" fill="none" stroke="var(--gold)" stroke-width="4"
+          stroke-linecap="round" stroke-dasharray="0 125.66" transform="rotate(-90 25 25)"
+          style="transition:stroke-dasharray 0.6s ease"/>
+      </svg>
+      <div class="goal-ring-inner">
+        <div class="goal-ring-num" id="daily-goal-text">0/20</div>
+      </div>
+      <div class="goal-ring-label" id="daily-goal-label">Daily goal</div>
+      <div class="goal-change-btns">
+        <button onclick="setDailyGoal(Math.max(5,getDailyGoal()-5))">−</button>
+        <button onclick="setDailyGoal(getDailyGoal()+5)">+</button>
+      </div>
+    </div>
+
+    <!-- Egypt Countdown -->
+    <div class="egypt-countdown">
+      <div class="egypt-flag">🇪🇬</div>
+      <div class="egypt-days" id="egypt-days">—</div>
+      <div class="egypt-label">days to Egypt</div>
+    </div>
+
+    <!-- Weak Words -->
+    <div class="weak-words-widget" onclick="startWeakWordsSession()">
+      <div class="weak-icon">💪</div>
+      <div class="weak-num" id="weak-word-count">0</div>
+      <div class="weak-label">Weak words</div>
+      <div class="weak-sub">Tap to drill</div>
+    </div>
+  </div>
+
+  <div class="menu-grid">
+    <div class="menu-card" onclick="goTo('flashcards')">
+      <div class="card-icon">🃏</div>
+      <div class="card-title">Flashcards</div>
+      <div class="card-desc">Flip through vocab with spaced repetition</div>
+    </div>
+    <div class="menu-card" onclick="goTo('quiz-select')">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Quiz Me!</div>
+      <div class="card-desc">Multiple choice, matching & sentence builder</div>
+    </div>
+    <div class="menu-card" onclick="goTo('vocab-list')">
+      <div class="card-icon">📖</div>
+      <div class="card-title">Vocabulary</div>
+      <div class="card-desc">Browse all words by unit and category</div>
+    </div>
+    <div class="menu-card" onclick="goTo('add-vocab')">
+      <div class="card-icon">✏️</div>
+      <div class="card-title">Add Vocab</div>
+      <div class="card-desc">Add your own words from the course</div>
+    </div>
+    <div class="menu-card" onclick="goTo('phrasebook')">
+      <div class="card-icon">🗺️</div>
+      <div class="card-title">Egypt Phrasebook</div>
+      <div class="card-desc">Essential phrases for your trip</div>
+    </div>
+    <div class="menu-card" onclick="goTo('weak-words')">
+      <div class="card-icon">💪</div>
+      <div class="card-title">Weak Words</div>
+      <div class="card-desc">Words you find difficult</div>
+    </div>
+    <div class="menu-card" onclick="goTo('schedule')">
+      <div class="card-icon">🗓️</div>
+      <div class="card-title">Study Plan</div>
+      <div class="card-desc">Your week-by-week roadmap to Egypt</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FLASHCARDS ═══════════════════════ -->
+<div id="flashcards" class="screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('home')">← Home</button>
+    <div class="screen-title">Flashcards</div>
+    <div class="book-selector" style="margin-bottom:0">
+      <button class="book-btn active" onclick="setFcBook(1,this)">B1</button>
+      <button class="book-btn" onclick="setFcBook(2,this)">B2</button>
+      <button class="book-btn" onclick="setFcBook(3,this)">B3</button>
+      <button class="book-btn" onclick="setFcBook(4,this)">B4</button>
+      <button class="book-btn" onclick="setFcBook('all',this)">All</button>
+    </div>
+  </div>
+
+  <div class="fc-progress">
+    <div class="fc-counter"><span id="fc-current">1</span> / <span id="fc-total">1</span></div>
+    <div class="dots" id="fc-dots"></div>
+  </div>
+
+  <div class="flashcard-wrapper">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="card-face card-front">
+        <div class="card-unit-label" id="fc-unit-label">Book 1 · Unit 1</div>
+        <div class="card-arabic" id="fc-arabic">مرحبا</div>
+        <div class="card-transliteration" id="fc-trans">marhaban</div>
+        <div class="card-category" id="fc-cat">Phrase</div>
+        <div class="card-listen-btn" id="fc-listen-btn" onclick="event.stopPropagation();speakArabic()" title="Listen">🔊</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-tag">English</div>
+        <div class="card-english" id="fc-english">Hello / Welcome</div>
+        <div class="card-example" id="fc-example">مرحبا، كيف حالك؟</div>
+        <div class="card-example-en" id="fc-example-en">Hello, how are you?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flip-hint">Click card to reveal →</div>
+
+  <div class="card-controls" id="fc-controls" style="display:none">
+    <button class="ctrl-btn hard" onclick="rateCard('hard')">😓 Hard</button>
+    <button class="ctrl-btn ok" onclick="rateCard('ok')">🤔 OK</button>
+    <button class="ctrl-btn easy" onclick="rateCard('easy')">😊 Easy</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════ QUIZ SELECT ═══════════════════════ -->
+<div id="quiz-select" class="screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('home')">← Home</button>
+    <div class="screen-title">Choose Your Quiz</div>
+  </div>
+
+  <div class="book-selector">
+    <button class="book-btn active" onclick="setQuizBook(1,this)">Book 1</button>
+    <button class="book-btn" onclick="setQuizBook(2,this)">Book 2</button>
+    <button class="book-btn" onclick="setQuizBook(3,this)">Book 3</button>
+    <button class="book-btn" onclick="setQuizBook(4,this)">Book 4</button>
+    <button class="book-btn" onclick="setQuizBook('all',this)">All Books</button>
+  </div>
+
+  <div class="quiz-type-selector">
+    <div class="quiz-type-btn" onclick="startQuiz('mc')">
+      <div class="qt-icon">🎯</div>
+      <div class="qt-name">Multiple Choice</div>
+    </div>
+    <div class="quiz-type-btn" onclick="startQuiz('match')">
+      <div class="qt-icon">🔗</div>
+      <div class="qt-name">Match It</div>
+    </div>
+    <div class="quiz-type-btn" onclick="startQuiz('sentence')">
+      <div class="qt-icon">📝</div>
+      <div class="qt-name">Build a Sentence</div>
+    </div>
+    <div class="quiz-type-btn" onclick="startQuiz('listen')">
+      <div class="qt-icon">👁️</div>
+      <div class="qt-name">Arabic → English</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ QUIZ ═══════════════════════ -->
+<div id="quiz" class="screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('quiz-select')">← Back</button>
+    <div class="screen-title" id="quiz-title">Quiz</div>
+  </div>
+
+  <div class="quiz-score">
+    <div class="score-item">
+      <div class="score-num correct" id="q-correct">0</div>
+      <div class="score-lbl">Correct ✓</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num" style="color:var(--muted)" id="q-remaining">10</div>
+      <div class="score-lbl">Remaining</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num wrong" id="q-wrong">0</div>
+      <div class="score-lbl">Wrong ✗</div>
+    </div>
+  </div>
+
+  <div id="quiz-container"></div>
+
+  <div class="feedback-panel" id="feedback"></div>
+  <button class="next-btn" id="next-btn" style="display:none" onclick="nextQuestion()">Next →</button>
+</div>
+
+<!-- ═══════════════════════ RESULTS ═══════════════════════ -->
+<div id="results" class="screen">
+  <div class="result-emoji" id="result-emoji">🏆</div>
+  <div class="result-score" id="result-score">8/10</div>
+  <div class="result-label" id="result-label">Excellent work!</div>
+  <div class="result-breakdown">
+    <div class="score-item">
+      <div class="score-num correct" id="r-correct">0</div>
+      <div class="score-lbl">Correct</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num wrong" id="r-wrong">0</div>
+      <div class="score-lbl">Wrong</div>
+    </div>
+  </div>
+  <div>
+    <button class="btn-primary" onclick="restartQuiz()">Try Again 🔄</button>
+    <button class="btn-secondary" onclick="goTo('home')">Home</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════ VOCAB LIST ═══════════════════════ -->
+<div id="vocab-list" class="screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('home')">← Home</button>
+    <div class="screen-title">Vocabulary Reference</div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" class="search-input" id="vocab-search" placeholder="Search in Arabic or English..." oninput="filterVocab()">
+  </div>
+
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+    <button class="filter-btn active" onclick="filterByType('all',this)">All</button>
+    <button class="filter-btn" onclick="filterByType('noun',this)">Nouns</button>
+    <button class="filter-btn" onclick="filterByType('verb',this)">Verbs</button>
+    <button class="filter-btn" onclick="filterByType('adj',this)">Adjectives</button>
+    <button class="filter-btn" onclick="filterByType('phrase',this)">Phrases</button>
+    <button class="filter-btn" onclick="filterByType('prep',this)">Prepositions</button>
+  </div>
+
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+    <button class="book-btn active" onclick="filterByBook('all',this)">All Books</button>
+    <button class="book-btn" onclick="filterByBook(1,this)">Book 1</button>
+    <button class="book-btn" onclick="filterByBook(2,this)">Book 2</button>
+    <button class="book-btn" onclick="filterByBook(3,this)">Book 3</button>
+    <button class="book-btn" onclick="filterByBook(4,this)">Book 4</button>
+  </div>
+
+  <div class="vocab-table" id="vocab-table"></div>
+</div>
+
+<!-- ═══════════════════════ SCHEDULE ═══════════════════════ -->
+<div id="schedule" class="screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('home')">← Home</button>
+    <div class="screen-title">Your Egypt Countdown 🇪🇬</div>
+  </div>
+
+  <div style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem">
+    <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);margin-bottom:0.4rem">Target: Books 1–3 before late July 2026</div>
+    <div style="font-size:0.85rem;color:var(--muted)">~20 weeks • 5–7 days/week • 30–60 min/day recommended</div>
+  </div>
+
+  <div class="schedule-grid" id="schedule-grid"></div>
+</div>
+
+
+<!-- ═══════════════════════ ADD VOCAB ═══════════════════════ -->
+<div id="add-vocab" class="screen">
+  <div id="add-vocab-inner" style="min-height:100%;padding:2rem;max-width:700px;margin:0 auto;">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('home')">← Home</button>
+    <div class="screen-title">Add Your Vocabulary</div>
+  </div>
+
+  <div class="add-vocab-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Arabic Word *</label>
+        <input type="text" id="input-arabic" class="form-input arabic-input" placeholder="مثال: كتاب" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Transliteration</label>
+        <input type="text" id="input-trans" class="form-input" placeholder="e.g. kitāb" autocomplete="off">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">English Meaning *</label>
+        <input type="text" id="input-english" class="form-input" placeholder="e.g. Book" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Word Type</label>
+        <select id="input-type" class="form-select">
+          <option value="noun">Noun</option>
+          <option value="verb">Verb</option>
+          <option value="adj">Adjective</option>
+          <option value="phrase">Phrase</option>
+          <option value="prep">Preposition</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Book</label>
+        <select id="input-book" class="form-select">
+          <option value="1">Book 1</option>
+          <option value="2">Book 2</option>
+          <option value="3">Book 3</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Unit</label>
+        <input type="number" id="input-unit" class="form-input" placeholder="e.g. 3" min="1" max="20" value="1">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group full">
+        <label class="form-label">Example Sentence (Arabic) — optional</label>
+        <input type="text" id="input-example" class="form-input arabic-input" placeholder="e.g. هذا كتاب جميل" autocomplete="off">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group full">
+        <label class="form-label">Example Translation — optional</label>
+        <input type="text" id="input-example-en" class="form-input" placeholder="e.g. This is a beautiful book" autocomplete="off">
+      </div>
+    </div>
+    <button class="add-btn" onclick="addCustomWord()">＋ Add Word to My Deck</button>
+  </div>
+
+  <div id="custom-word-count-banner"></div>
+
+  <div class="section-divider">My Added Words</div>
+
+  <div class="custom-words-list" id="custom-words-list"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════ PHRASEBOOK ═══════════════════════ -->
+<div id="phrasebook" class="screen">
+  <div style="min-height:100%;padding:2rem;max-width:750px;margin:0 auto">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('home')">← Home</button>
+    <div class="screen-title">🗺️ Egypt Phrasebook</div>
+  </div>
+  <div style="font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:0.8rem 1rem">
+    Essential phrases for your Egypt trip — tap 🔊 to hear any phrase
+  </div>
+  <div id="phrasebook-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ WEAK WORDS ═══════════════════════ -->
+<div id="weak-words" class="screen">
+  <div style="min-height:100%;padding:2rem;max-width:750px;margin:0 auto">
+  <div class="screen-header">
+    <button class="back-btn" onclick="goTo('home')">← Home</button>
+    <div class="screen-title">💪 Weak Words</div>
+  </div>
+  <div id="weak-words-content"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// DATA — Bayna Yadayk Vocabulary (Books 1-3)
+// ══════════════════════════════════════════════════════════════
+const VOCAB = [
+
+  // ════════════════════════════════════════════════════
+  // BOOK 1
+  // ════════════════════════════════════════════════════
+
+  // ── Book 1 · Unit 1 — Greetings & Classroom ─────────
+  {ar:"مرحبا", tr:"marhaban", en:"Hello / Welcome", type:"phrase", book:1, unit:1, ex:"مرحبا، أنا اسمي سارة", exEn:"Hello, my name is Sara"},
+  {ar:"أهلاً وسهلاً", tr:"ahlan wa-sahlan", en:"Welcome (warm greeting)", type:"phrase", book:1, unit:1, ex:"أهلاً وسهلاً بك في بيتنا", exEn:"Welcome to our home"},
+  {ar:"السلام عليكم", tr:"as-salāmu ʿalaykum", en:"Peace be upon you", type:"phrase", book:1, unit:1, ex:"السلام عليكم يا أصدقاء", exEn:"Peace be upon you, friends"},
+  {ar:"وعليكم السلام", tr:"wa-ʿalaykum as-salām", en:"And upon you peace", type:"phrase", book:1, unit:1, ex:"وعليكم السلام ورحمة الله", exEn:"And upon you peace and God's mercy"},
+  {ar:"كيف حالك؟", tr:"kayfa hāluk?", en:"How are you? (m)", type:"phrase", book:1, unit:1, ex:"أهلاً! كيف حالك؟", exEn:"Hi! How are you?"},
+  {ar:"كيف حالكِ؟", tr:"kayfa hāluki?", en:"How are you? (f)", type:"phrase", book:1, unit:1, ex:"كيف حالكِ يا سارة؟", exEn:"How are you, Sara?"},
+  {ar:"بخير، شكراً", tr:"bi-khayr, shukran", en:"Fine, thank you", type:"phrase", book:1, unit:1, ex:"أنا بخير، شكراً وأنت؟", exEn:"I'm fine, thank you, and you?"},
+  {ar:"الحمد لله", tr:"al-ḥamdu lillāh", en:"Praise be to God / I'm fine", type:"phrase", book:1, unit:1, ex:"الحمد لله، أنا بخير", exEn:"Praise be to God, I'm fine"},
+  {ar:"شكراً", tr:"shukran", en:"Thank you", type:"phrase", book:1, unit:1, ex:"شكراً جزيلاً", exEn:"Thank you very much"},
+  {ar:"شكراً جزيلاً", tr:"shukran jazīlan", en:"Thank you very much", type:"phrase", book:1, unit:1, ex:"شكراً جزيلاً على مساعدتك", exEn:"Thank you very much for your help"},
+  {ar:"عفواً", tr:"ʿafwan", en:"You're welcome / Excuse me", type:"phrase", book:1, unit:1, ex:"عفواً، أين المسجد؟", exEn:"Excuse me, where is the mosque?"},
+  {ar:"من فضلك", tr:"min faḍlak", en:"Please (m)", type:"phrase", book:1, unit:1, ex:"من فضلك، ساعدني", exEn:"Please, help me"},
+  {ar:"من فضلكِ", tr:"min faḍlaki", en:"Please (f)", type:"phrase", book:1, unit:1, ex:"من فضلكِ، أعطيني الكتاب", exEn:"Please, give me the book"},
+  {ar:"مع السلامة", tr:"maʿa s-salāma", en:"Goodbye", type:"phrase", book:1, unit:1, ex:"مع السلامة، إلى اللقاء", exEn:"Goodbye, see you"},
+  {ar:"إلى اللقاء", tr:"ilā l-liqāʾ", en:"See you / Until we meet", type:"phrase", book:1, unit:1, ex:"إلى اللقاء غداً", exEn:"See you tomorrow"},
+  {ar:"نعم", tr:"naʿam", en:"Yes", type:"phrase", book:1, unit:1, ex:"نعم، أنا طالب", exEn:"Yes, I am a student"},
+  {ar:"لا", tr:"lā", en:"No", type:"phrase", book:1, unit:1, ex:"لا، أنا لست طالباً", exEn:"No, I am not a student"},
+  {ar:"اسم", tr:"ism", en:"Name", type:"noun", book:1, unit:1, ex:"ما اسمك؟", exEn:"What is your name?"},
+  {ar:"طالب", tr:"ṭālib", en:"Student (m)", type:"noun", book:1, unit:1, ex:"أنا طالب في الجامعة", exEn:"I am a student at the university"},
+  {ar:"طالبة", tr:"ṭāliba", en:"Student (f)", type:"noun", book:1, unit:1, ex:"هي طالبة مجتهدة", exEn:"She is a hardworking student"},
+  {ar:"أستاذ", tr:"ustādh", en:"Professor / Mr.", type:"noun", book:1, unit:1, ex:"الأستاذ يشرح الدرس", exEn:"The professor explains the lesson"},
+  {ar:"أستاذة", tr:"ustādha", en:"Professor / Ms. (f)", type:"noun", book:1, unit:1, ex:"الأستاذة محترمة", exEn:"The female professor is respected"},
+  {ar:"فصل", tr:"faṣl", en:"Classroom / Chapter", type:"noun", book:1, unit:1, ex:"الفصل كبير", exEn:"The classroom is big"},
+  {ar:"كتاب", tr:"kitāb", en:"Book", type:"noun", book:1, unit:1, ex:"هذا كتاب جديد", exEn:"This is a new book"},
+  {ar:"قلم", tr:"qalam", en:"Pen / Pencil", type:"noun", book:1, unit:1, ex:"القلم على الطاولة", exEn:"The pen is on the table"},
+  {ar:"ورقة", tr:"waraqa", en:"Paper / Sheet", type:"noun", book:1, unit:1, ex:"أعطني ورقة من فضلك", exEn:"Give me a piece of paper please"},
+  {ar:"باب", tr:"bāb", en:"Door", type:"noun", book:1, unit:1, ex:"الباب مفتوح", exEn:"The door is open"},
+  {ar:"نافذة", tr:"nāfidha", en:"Window", type:"noun", book:1, unit:1, ex:"النافذة مغلقة", exEn:"The window is closed"},
+  {ar:"طاولة", tr:"ṭāwila", en:"Table / Desk", type:"noun", book:1, unit:1, ex:"الكتاب على الطاولة", exEn:"The book is on the table"},
+  {ar:"كرسي", tr:"kursī", en:"Chair", type:"noun", book:1, unit:1, ex:"اجلس على الكرسي", exEn:"Sit on the chair"},
+  {ar:"سبّورة", tr:"sabbūra", en:"Blackboard / Whiteboard", type:"noun", book:1, unit:1, ex:"الأستاذ يكتب على السبّورة", exEn:"The professor writes on the board"},
+  {ar:"هذا", tr:"hādhā", en:"This (m)", type:"phrase", book:1, unit:1, ex:"هذا كتاب عربي", exEn:"This is an Arabic book"},
+  {ar:"هذه", tr:"hādhihi", en:"This (f)", type:"phrase", book:1, unit:1, ex:"هذه طالبة جديدة", exEn:"This is a new student (f)"},
+  {ar:"ذلك", tr:"dhālika", en:"That (m)", type:"phrase", book:1, unit:1, ex:"ذلك بيت كبير", exEn:"That is a big house"},
+  {ar:"أنا", tr:"anā", en:"I / Me", type:"phrase", book:1, unit:1, ex:"أنا طالب عربي", exEn:"I am an Arab student"},
+  {ar:"أنتَ", tr:"anta", en:"You (m)", type:"phrase", book:1, unit:1, ex:"أنتَ طالب ممتاز", exEn:"You are an excellent student"},
+  {ar:"أنتِ", tr:"anti", en:"You (f)", type:"phrase", book:1, unit:1, ex:"أنتِ طالبة ممتازة", exEn:"You are an excellent student (f)"},
+  {ar:"هو", tr:"huwa", en:"He", type:"phrase", book:1, unit:1, ex:"هو أستاذ في الجامعة", exEn:"He is a professor at the university"},
+  {ar:"هي", tr:"hiya", en:"She", type:"phrase", book:1, unit:1, ex:"هي طالبة في الفصل", exEn:"She is a student in the class"},
+
+  // ── Book 1 · Unit 2 — Countries & Nationalities ──────
+  {ar:"بلد", tr:"balad", en:"Country", type:"noun", book:1, unit:2, ex:"من أي بلد أنت؟", exEn:"What country are you from?"},
+  {ar:"مدينة", tr:"madīna", en:"City", type:"noun", book:1, unit:2, ex:"القاهرة مدينة كبيرة", exEn:"Cairo is a big city"},
+  {ar:"عاصمة", tr:"ʿāṣima", en:"Capital city", type:"noun", book:1, unit:2, ex:"القاهرة عاصمة مصر", exEn:"Cairo is the capital of Egypt"},
+  {ar:"مصر", tr:"miṣr", en:"Egypt", type:"noun", book:1, unit:2, ex:"مصر بلد جميل", exEn:"Egypt is a beautiful country"},
+  {ar:"السعودية", tr:"as-saʿūdiyya", en:"Saudi Arabia", type:"noun", book:1, unit:2, ex:"الرياض عاصمة السعودية", exEn:"Riyadh is the capital of Saudi Arabia"},
+  {ar:"الأردن", tr:"al-urdun", en:"Jordan", type:"noun", book:1, unit:2, ex:"عمّان عاصمة الأردن", exEn:"Amman is the capital of Jordan"},
+  {ar:"لبنان", tr:"lubnān", en:"Lebanon", type:"noun", book:1, unit:2, ex:"بيروت عاصمة لبنان", exEn:"Beirut is the capital of Lebanon"},
+  {ar:"سوريا", tr:"sūriyā", en:"Syria", type:"noun", book:1, unit:2, ex:"دمشق عاصمة سوريا", exEn:"Damascus is the capital of Syria"},
+  {ar:"المغرب", tr:"al-maghrib", en:"Morocco", type:"noun", book:1, unit:2, ex:"الرباط عاصمة المغرب", exEn:"Rabat is the capital of Morocco"},
+  {ar:"تونس", tr:"tūnis", en:"Tunisia", type:"noun", book:1, unit:2, ex:"تونس بلد جميل", exEn:"Tunisia is a beautiful country"},
+  {ar:"العراق", tr:"al-ʿirāq", en:"Iraq", type:"noun", book:1, unit:2, ex:"بغداد عاصمة العراق", exEn:"Baghdad is the capital of Iraq"},
+  {ar:"أمريكا", tr:"amrīkā", en:"America", type:"noun", book:1, unit:2, ex:"واشنطن عاصمة أمريكا", exEn:"Washington is the capital of America"},
+  {ar:"بريطانيا", tr:"brīṭāniyā", en:"Britain", type:"noun", book:1, unit:2, ex:"لندن عاصمة بريطانيا", exEn:"London is the capital of Britain"},
+  {ar:"فرنسا", tr:"faransā", en:"France", type:"noun", book:1, unit:2, ex:"باريس عاصمة فرنسا", exEn:"Paris is the capital of France"},
+  {ar:"عربي", tr:"ʿarabī", en:"Arab / Arabic (m)", type:"adj", book:1, unit:2, ex:"أتعلم اللغة العربية", exEn:"I am learning the Arabic language"},
+  {ar:"عربية", tr:"ʿarabiyya", en:"Arab / Arabic (f)", type:"adj", book:1, unit:2, ex:"هذه لغة عربية", exEn:"This is an Arabic language"},
+  {ar:"أمريكي", tr:"amrīkī", en:"American (m)", type:"adj", book:1, unit:2, ex:"هو طالب أمريكي", exEn:"He is an American student"},
+  {ar:"مصري", tr:"miṣrī", en:"Egyptian (m)", type:"adj", book:1, unit:2, ex:"هو مصري الجنسية", exEn:"He is Egyptian in nationality"},
+  {ar:"جنسية", tr:"jinsiyya", en:"Nationality", type:"noun", book:1, unit:2, ex:"ما جنسيتك؟", exEn:"What is your nationality?"},
+  {ar:"لغة", tr:"lugha", en:"Language", type:"noun", book:1, unit:2, ex:"أتكلم لغتين", exEn:"I speak two languages"},
+  {ar:"اللغة العربية", tr:"al-lugha al-ʿarabiyya", en:"The Arabic language", type:"noun", book:1, unit:2, ex:"أتعلم اللغة العربية", exEn:"I am learning the Arabic language"},
+  {ar:"يتكلم", tr:"yatakallam", en:"He speaks", type:"verb", book:1, unit:2, ex:"هو يتكلم العربية جيداً", exEn:"He speaks Arabic well"},
+  {ar:"جيداً", tr:"jayyidan", en:"Well / Good", type:"phrase", book:1, unit:2, ex:"يتكلم العربية جيداً", exEn:"He speaks Arabic well"},
+  {ar:"قليلاً", tr:"qalīlan", en:"A little", type:"phrase", book:1, unit:2, ex:"أتكلم العربية قليلاً", exEn:"I speak Arabic a little"},
+  {ar:"من أين؟", tr:"min ayna?", en:"From where?", type:"phrase", book:1, unit:2, ex:"من أين أنت؟", exEn:"Where are you from?"},
+
+  // ── Book 1 · Unit 3 — Family ─────────────────────────
+  {ar:"أسرة", tr:"usra", en:"Family", type:"noun", book:1, unit:3, ex:"أسرتي كبيرة", exEn:"My family is big"},
+  {ar:"عائلة", tr:"ʿāʾila", en:"Family (also used)", type:"noun", book:1, unit:3, ex:"عائلتي تسكن في القاهرة", exEn:"My family lives in Cairo"},
+  {ar:"أب", tr:"ab", en:"Father", type:"noun", book:1, unit:3, ex:"أبي طبيب", exEn:"My father is a doctor"},
+  {ar:"والد", tr:"wālid", en:"Father (formal)", type:"noun", book:1, unit:3, ex:"والدي يعمل في الشركة", exEn:"My father works at the company"},
+  {ar:"أم", tr:"umm", en:"Mother", type:"noun", book:1, unit:3, ex:"أمي معلمة", exEn:"My mother is a teacher"},
+  {ar:"والدة", tr:"wālida", en:"Mother (formal)", type:"noun", book:1, unit:3, ex:"والدتي طيبة جداً", exEn:"My mother is very kind"},
+  {ar:"أخ", tr:"akh", en:"Brother", type:"noun", book:1, unit:3, ex:"لدي أخ واحد", exEn:"I have one brother"},
+  {ar:"إخوة", tr:"ikhwa", en:"Brothers / Siblings", type:"noun", book:1, unit:3, ex:"لديّ ثلاثة إخوة", exEn:"I have three brothers"},
+  {ar:"أخت", tr:"ukht", en:"Sister", type:"noun", book:1, unit:3, ex:"أختي صغيرة", exEn:"My sister is young"},
+  {ar:"أخوات", tr:"akhawāt", en:"Sisters", type:"noun", book:1, unit:3, ex:"لديّ أختان", exEn:"I have two sisters"},
+  {ar:"زوج", tr:"zawj", en:"Husband", type:"noun", book:1, unit:3, ex:"زوجها طيار", exEn:"Her husband is a pilot"},
+  {ar:"زوجة", tr:"zawja", en:"Wife", type:"noun", book:1, unit:3, ex:"زوجته ممرضة", exEn:"His wife is a nurse"},
+  {ar:"ابن", tr:"ibn", en:"Son", type:"noun", book:1, unit:3, ex:"ابنه في المدرسة", exEn:"His son is at school"},
+  {ar:"ابنة", tr:"ibna", en:"Daughter", type:"noun", book:1, unit:3, ex:"ابنتهم تدرس الطب", exEn:"Their daughter studies medicine"},
+  {ar:"بنت", tr:"bint", en:"Girl / Daughter", type:"noun", book:1, unit:3, ex:"البنت تلعب في الحديقة", exEn:"The girl plays in the garden"},
+  {ar:"ولد", tr:"walad", en:"Boy / Son", type:"noun", book:1, unit:3, ex:"الولد يدرس في المدرسة", exEn:"The boy studies at school"},
+  {ar:"جد", tr:"jadd", en:"Grandfather", type:"noun", book:1, unit:3, ex:"جدي كبير في السن", exEn:"My grandfather is old"},
+  {ar:"جدة", tr:"jadda", en:"Grandmother", type:"noun", book:1, unit:3, ex:"جدتي تسكن معنا", exEn:"My grandmother lives with us"},
+  {ar:"عم", tr:"ʿamm", en:"Uncle (father's side)", type:"noun", book:1, unit:3, ex:"عمي طبيب مشهور", exEn:"My uncle is a famous doctor"},
+  {ar:"عمة", tr:"ʿamma", en:"Aunt (father's side)", type:"noun", book:1, unit:3, ex:"عمتي تسكن في الرياض", exEn:"My aunt lives in Riyadh"},
+  {ar:"خال", tr:"khāl", en:"Uncle (mother's side)", type:"noun", book:1, unit:3, ex:"خالي مهندس", exEn:"My maternal uncle is an engineer"},
+  {ar:"خالة", tr:"khāla", en:"Aunt (mother's side)", type:"noun", book:1, unit:3, ex:"خالتي معلمة", exEn:"My maternal aunt is a teacher"},
+  {ar:"ابن عم", tr:"ibn ʿamm", en:"Male cousin (paternal)", type:"noun", book:1, unit:3, ex:"ابن عمي صديقي", exEn:"My cousin is my friend"},
+  {ar:"كبير", tr:"kabīr", en:"Big / Old / Elder", type:"adj", book:1, unit:3, ex:"أخي الكبير في الجامعة", exEn:"My older brother is at university"},
+  {ar:"صغير", tr:"ṣaghīr", en:"Small / Young", type:"adj", book:1, unit:3, ex:"أختي الصغيرة لطيفة", exEn:"My younger sister is kind"},
+  {ar:"متزوج", tr:"mutazawwij", en:"Married (m)", type:"adj", book:1, unit:3, ex:"أخي متزوج وعنده أطفال", exEn:"My brother is married and has children"},
+  {ar:"أعزب", tr:"aʿzab", en:"Single / Unmarried (m)", type:"adj", book:1, unit:3, ex:"أنا لا أزال أعزب", exEn:"I am still single"},
+  {ar:"أطفال", tr:"aṭfāl", en:"Children", type:"noun", book:1, unit:3, ex:"لديهم ثلاثة أطفال", exEn:"They have three children"},
+  {ar:"لديّ", tr:"ladayya", en:"I have", type:"phrase", book:1, unit:3, ex:"لديّ أخ وأختان", exEn:"I have one brother and two sisters"},
+
+  // ── Book 1 · Unit 4 — Home & Places ─────────────────
+  {ar:"بيت", tr:"bayt", en:"House / Home", type:"noun", book:1, unit:4, ex:"بيتنا قريب من الجامعة", exEn:"Our house is near the university"},
+  {ar:"شقة", tr:"shaqqa", en:"Apartment / Flat", type:"noun", book:1, unit:4, ex:"أسكن في شقة صغيرة", exEn:"I live in a small apartment"},
+  {ar:"غرفة", tr:"ghurfa", en:"Room", type:"noun", book:1, unit:4, ex:"البيت فيه أربع غرف", exEn:"The house has four rooms"},
+  {ar:"غرفة النوم", tr:"ghurfat an-nawm", en:"Bedroom", type:"noun", book:1, unit:4, ex:"غرفة النوم واسعة", exEn:"The bedroom is spacious"},
+  {ar:"غرفة الجلوس", tr:"ghurfat al-julūs", en:"Living room", type:"noun", book:1, unit:4, ex:"نجلس في غرفة الجلوس", exEn:"We sit in the living room"},
+  {ar:"مطبخ", tr:"maṭbakh", en:"Kitchen", type:"noun", book:1, unit:4, ex:"أمي في المطبخ", exEn:"My mother is in the kitchen"},
+  {ar:"حمام", tr:"ḥammām", en:"Bathroom", type:"noun", book:1, unit:4, ex:"الحمام في آخر الممر", exEn:"The bathroom is at the end of the corridor"},
+  {ar:"حديقة", tr:"ḥadīqa", en:"Garden", type:"noun", book:1, unit:4, ex:"البيت عنده حديقة جميلة", exEn:"The house has a beautiful garden"},
+  {ar:"مدرسة", tr:"madrasa", en:"School", type:"noun", book:1, unit:4, ex:"المدرسة كبيرة", exEn:"The school is big"},
+  {ar:"جامعة", tr:"jāmiʿa", en:"University", type:"noun", book:1, unit:4, ex:"أدرس في الجامعة", exEn:"I study at the university"},
+  {ar:"مسجد", tr:"masjid", en:"Mosque", type:"noun", book:1, unit:4, ex:"المسجد قريب من البيت", exEn:"The mosque is near the house"},
+  {ar:"كنيسة", tr:"kanīsa", en:"Church", type:"noun", book:1, unit:4, ex:"الكنيسة في وسط المدينة", exEn:"The church is in the city centre"},
+  {ar:"سوق", tr:"sūq", en:"Market / Bazaar", type:"noun", book:1, unit:4, ex:"السوق مزدحم اليوم", exEn:"The market is crowded today"},
+  {ar:"مطعم", tr:"maṭʿam", en:"Restaurant", type:"noun", book:1, unit:4, ex:"المطعم لذيذ", exEn:"The restaurant is delicious"},
+  {ar:"مستشفى", tr:"mustashfā", en:"Hospital", type:"noun", book:1, unit:4, ex:"المستشفى قريب من هنا", exEn:"The hospital is near here"},
+  {ar:"بنك", tr:"bank", en:"Bank", type:"noun", book:1, unit:4, ex:"البنك يفتح الساعة التاسعة", exEn:"The bank opens at nine"},
+  {ar:"شارع", tr:"shāriʿ", en:"Street", type:"noun", book:1, unit:4, ex:"البيت في هذا الشارع", exEn:"The house is on this street"},
+  {ar:"يذهب", tr:"yadhhab", en:"He goes", type:"verb", book:1, unit:4, ex:"يذهب إلى المدرسة كل يوم", exEn:"He goes to school every day"},
+  {ar:"يدرس", tr:"yadrus", en:"He studies", type:"verb", book:1, unit:4, ex:"يدرس اللغة العربية", exEn:"He studies Arabic"},
+  {ar:"يسكن", tr:"yaskun", en:"He lives / resides", type:"verb", book:1, unit:4, ex:"يسكن في القاهرة", exEn:"He lives in Cairo"},
+  {ar:"قريب من", tr:"qarīb min", en:"Near / Close to", type:"prep", book:1, unit:4, ex:"البيت قريب من هنا", exEn:"The house is close to here"},
+  {ar:"بعيد عن", tr:"baʿīd ʿan", en:"Far from", type:"prep", book:1, unit:4, ex:"المطار بعيد عن المدينة", exEn:"The airport is far from the city"},
+  {ar:"في", tr:"fī", en:"In / At", type:"prep", book:1, unit:4, ex:"أنا في البيت", exEn:"I am at home"},
+  {ar:"إلى", tr:"ilā", en:"To", type:"prep", book:1, unit:4, ex:"أذهب إلى الجامعة", exEn:"I go to the university"},
+  {ar:"من", tr:"min", en:"From", type:"prep", book:1, unit:4, ex:"أنا من مصر", exEn:"I am from Egypt"},
+  {ar:"على", tr:"ʿalā", en:"On / Upon", type:"prep", book:1, unit:4, ex:"الكتاب على الطاولة", exEn:"The book is on the table"},
+  {ar:"تحت", tr:"taḥta", en:"Under / Below", type:"prep", book:1, unit:4, ex:"الكرسي تحت الطاولة", exEn:"The chair is under the table"},
+  {ar:"أمام", tr:"amāma", en:"In front of", type:"prep", book:1, unit:4, ex:"الباب أمام البيت", exEn:"The door is in front of the house"},
+  {ar:"خلف", tr:"khalfa", en:"Behind", type:"prep", book:1, unit:4, ex:"الحديقة خلف البيت", exEn:"The garden is behind the house"},
+  {ar:"بجانب", tr:"bi-jānib", en:"Next to / Beside", type:"prep", book:1, unit:4, ex:"البنك بجانب المطعم", exEn:"The bank is next to the restaurant"},
+  {ar:"هنا", tr:"hunā", en:"Here", type:"phrase", book:1, unit:4, ex:"أنا هنا", exEn:"I am here"},
+  {ar:"هناك", tr:"hunāka", en:"There", type:"phrase", book:1, unit:4, ex:"الجامعة هناك", exEn:"The university is there"},
+
+  // ── Book 1 · Unit 5 — Numbers & Time ─────────────────
+  {ar:"واحد", tr:"wāḥid", en:"One (1)", type:"noun", book:1, unit:5, ex:"عندي كتاب واحد", exEn:"I have one book"},
+  {ar:"اثنان", tr:"ithnān", en:"Two (2)", type:"noun", book:1, unit:5, ex:"عندي قلمان اثنان", exEn:"I have two pens"},
+  {ar:"ثلاثة", tr:"thalātha", en:"Three (3)", type:"noun", book:1, unit:5, ex:"لديّ ثلاثة كتب", exEn:"I have three books"},
+  {ar:"أربعة", tr:"arbaʿa", en:"Four (4)", type:"noun", book:1, unit:5, ex:"في الغرفة أربعة كراسي", exEn:"There are four chairs in the room"},
+  {ar:"خمسة", tr:"khamsa", en:"Five (5)", type:"noun", book:1, unit:5, ex:"الأسبوع خمسة أيام دراسة", exEn:"The week has five study days"},
+  {ar:"ستة", tr:"sitta", en:"Six (6)", type:"noun", book:1, unit:5, ex:"في الفصل ستة وعشرون طالباً", exEn:"There are twenty-six students in the class"},
+  {ar:"سبعة", tr:"sabʿa", en:"Seven (7)", type:"noun", book:1, unit:5, ex:"الأسبوع سبعة أيام", exEn:"The week has seven days"},
+  {ar:"ثمانية", tr:"thamāniya", en:"Eight (8)", type:"noun", book:1, unit:5, ex:"الساعة الثامنة صباحاً", exEn:"Eight o'clock in the morning"},
+  {ar:"تسعة", tr:"tisʿa", en:"Nine (9)", type:"noun", book:1, unit:5, ex:"درسنا تسع ساعات", exEn:"We studied nine hours"},
+  {ar:"عشرة", tr:"ʿashara", en:"Ten (10)", type:"noun", book:1, unit:5, ex:"عشرة دروس في الأسبوع", exEn:"Ten lessons per week"},
+  {ar:"ساعة", tr:"sāʿa", en:"Hour / Clock / Watch", type:"noun", book:1, unit:5, ex:"كم الساعة؟", exEn:"What time is it?"},
+  {ar:"دقيقة", tr:"daqīqa", en:"Minute", type:"noun", book:1, unit:5, ex:"انتظر خمس دقائق", exEn:"Wait five minutes"},
+  {ar:"يوم", tr:"yawm", en:"Day", type:"noun", book:1, unit:5, ex:"كل يوم أتعلم كلمات جديدة", exEn:"Every day I learn new words"},
+  {ar:"أسبوع", tr:"usbūʿ", en:"Week", type:"noun", book:1, unit:5, ex:"في هذا الأسبوع أنا مشغول", exEn:"This week I am busy"},
+  {ar:"شهر", tr:"shahr", en:"Month", type:"noun", book:1, unit:5, ex:"الشهر القادم سأسافر", exEn:"Next month I will travel"},
+  {ar:"سنة", tr:"sana", en:"Year", type:"noun", book:1, unit:5, ex:"هذه السنة أدرس العربية", exEn:"This year I study Arabic"},
+  {ar:"الآن", tr:"al-ān", en:"Now", type:"phrase", book:1, unit:5, ex:"أنا مشغول الآن", exEn:"I am busy now"},
+  {ar:"اليوم", tr:"al-yawm", en:"Today", type:"phrase", book:1, unit:5, ex:"اليوم الطقس جميل", exEn:"Today the weather is beautiful"},
+  {ar:"غداً", tr:"ghadan", en:"Tomorrow", type:"phrase", book:1, unit:5, ex:"سأذهب غداً", exEn:"I will go tomorrow"},
+  {ar:"أمس", tr:"ams", en:"Yesterday", type:"phrase", book:1, unit:5, ex:"ذهبت أمس إلى السوق", exEn:"I went to the market yesterday"},
+  {ar:"الأسبوع القادم", tr:"al-usbūʿ al-qādim", en:"Next week", type:"phrase", book:1, unit:5, ex:"سأسافر الأسبوع القادم", exEn:"I will travel next week"},
+  {ar:"صباح", tr:"ṣabāḥ", en:"Morning", type:"noun", book:1, unit:5, ex:"صباح الخير", exEn:"Good morning"},
+  {ar:"ظهر", tr:"ẓuhr", en:"Noon / Midday", type:"noun", book:1, unit:5, ex:"نأكل الغداء عند الظهر", exEn:"We eat lunch at noon"},
+  {ar:"مساء", tr:"masāʾ", en:"Evening / Afternoon", type:"noun", book:1, unit:5, ex:"مساء النور", exEn:"Good evening"},
+  {ar:"ليل", tr:"layl", en:"Night", type:"noun", book:1, unit:5, ex:"أدرس في الليل", exEn:"I study at night"},
+  {ar:"الأحد", tr:"al-aḥad", en:"Sunday", type:"noun", book:1, unit:5, ex:"يوم الأحد عطلة", exEn:"Sunday is a day off"},
+  {ar:"الاثنين", tr:"al-ithnayn", en:"Monday", type:"noun", book:1, unit:5, ex:"الدرس يوم الاثنين", exEn:"The lesson is on Monday"},
+  {ar:"الثلاثاء", tr:"ath-thalāthāʾ", en:"Tuesday", type:"noun", book:1, unit:5, ex:"يوم الثلاثاء أذهب للجامعة", exEn:"On Tuesday I go to university"},
+  {ar:"الأربعاء", tr:"al-arbiʿāʾ", en:"Wednesday", type:"noun", book:1, unit:5, ex:"الاجتماع يوم الأربعاء", exEn:"The meeting is on Wednesday"},
+  {ar:"الخميس", tr:"al-khamīs", en:"Thursday", type:"noun", book:1, unit:5, ex:"نتمرن يوم الخميس", exEn:"We practise on Thursday"},
+  {ar:"الجمعة", tr:"al-jumʿa", en:"Friday", type:"noun", book:1, unit:5, ex:"الجمعة يوم مقدس", exEn:"Friday is a holy day"},
+  {ar:"السبت", tr:"as-sabt", en:"Saturday", type:"noun", book:1, unit:5, ex:"يوم السبت عطلة", exEn:"Saturday is a holiday"},
+
+  // ── Book 1 · Unit 6 — Colors & Descriptions ──────────
+  {ar:"لون", tr:"lawn", en:"Color", type:"noun", book:1, unit:6, ex:"ما لون هذا؟", exEn:"What color is this?"},
+  {ar:"أحمر", tr:"aḥmar", en:"Red", type:"adj", book:1, unit:6, ex:"هذا قلم أحمر", exEn:"This is a red pen"},
+  {ar:"أزرق", tr:"azraq", en:"Blue", type:"adj", book:1, unit:6, ex:"السماء زرقاء", exEn:"The sky is blue"},
+  {ar:"أخضر", tr:"akhḍar", en:"Green", type:"adj", book:1, unit:6, ex:"الحديقة خضراء", exEn:"The garden is green"},
+  {ar:"أصفر", tr:"aṣfar", en:"Yellow", type:"adj", book:1, unit:6, ex:"الشمس صفراء", exEn:"The sun is yellow"},
+  {ar:"أبيض", tr:"abyaḍ", en:"White", type:"adj", book:1, unit:6, ex:"الورقة بيضاء", exEn:"The paper is white"},
+  {ar:"أسود", tr:"aswad", en:"Black", type:"adj", book:1, unit:6, ex:"القلم أسود", exEn:"The pen is black"},
+  {ar:"بني", tr:"bunnī", en:"Brown", type:"adj", book:1, unit:6, ex:"الباب بني اللون", exEn:"The door is brown"},
+  {ar:"جميل", tr:"jamīl", en:"Beautiful / Nice", type:"adj", book:1, unit:6, ex:"هذا بيت جميل", exEn:"This is a beautiful house"},
+  {ar:"كبير", tr:"kabīr", en:"Big / Large", type:"adj", book:1, unit:6, ex:"البيت كبير", exEn:"The house is big"},
+  {ar:"صغير", tr:"ṣaghīr", en:"Small / Little", type:"adj", book:1, unit:6, ex:"الغرفة صغيرة", exEn:"The room is small"},
+  {ar:"طويل", tr:"ṭawīl", en:"Tall / Long", type:"adj", book:1, unit:6, ex:"هو طالب طويل", exEn:"He is a tall student"},
+  {ar:"قصير", tr:"qaṣīr", en:"Short", type:"adj", book:1, unit:6, ex:"الدرس قصير اليوم", exEn:"The lesson is short today"},
+  {ar:"جديد", tr:"jadīd", en:"New", type:"adj", book:1, unit:6, ex:"اشتريت كتاباً جديداً", exEn:"I bought a new book"},
+  {ar:"قديم", tr:"qadīm", en:"Old / Ancient", type:"adj", book:1, unit:6, ex:"الأهرام قديمة جداً", exEn:"The pyramids are very old"},
+  {ar:"نظيف", tr:"naẓīf", en:"Clean", type:"adj", book:1, unit:6, ex:"الفصل نظيف", exEn:"The classroom is clean"},
+  {ar:"وسخ", tr:"wasikh", en:"Dirty", type:"adj", book:1, unit:6, ex:"الشارع وسخ", exEn:"The street is dirty"},
+  {ar:"واسع", tr:"wāsiʿ", en:"Spacious / Wide", type:"adj", book:1, unit:6, ex:"الشقة واسعة", exEn:"The apartment is spacious"},
+  {ar:"ضيّق", tr:"ḍayyiq", en:"Narrow / Tight", type:"adj", book:1, unit:6, ex:"الشارع ضيّق", exEn:"The street is narrow"},
+  {ar:"جداً", tr:"jiddan", en:"Very", type:"phrase", book:1, unit:6, ex:"هو طويل جداً", exEn:"He is very tall"},
+
+  // ════════════════════════════════════════════════════
+  // BOOK 2
+  // ════════════════════════════════════════════════════
+
+  // ── Book 2 · Unit 1 — Daily Routine & Verbs ──────────
+  {ar:"يستيقظ", tr:"yastayqiẓ", en:"He wakes up", type:"verb", book:2, unit:1, ex:"يستيقظ مبكراً كل يوم", exEn:"He wakes up early every day"},
+  {ar:"يأكل", tr:"yaʾkul", en:"He eats", type:"verb", book:2, unit:1, ex:"يأكل الفطور في البيت", exEn:"He eats breakfast at home"},
+  {ar:"يشرب", tr:"yashrab", en:"He drinks", type:"verb", book:2, unit:1, ex:"يشرب القهوة كل صباح", exEn:"He drinks coffee every morning"},
+  {ar:"يكتب", tr:"yaktub", en:"He writes", type:"verb", book:2, unit:1, ex:"يكتب الدرس في الدفتر", exEn:"He writes the lesson in the notebook"},
+  {ar:"يقرأ", tr:"yaqraʾ", en:"He reads", type:"verb", book:2, unit:1, ex:"يقرأ كتاباً مفيداً", exEn:"He reads a useful book"},
+  {ar:"يسمع", tr:"yasmaʿ", en:"He listens / hears", type:"verb", book:2, unit:1, ex:"يسمع الموسيقى", exEn:"He listens to music"},
+  {ar:"يتعلم", tr:"yataʿallam", en:"He learns", type:"verb", book:2, unit:1, ex:"يتعلم العربية بجد", exEn:"He learns Arabic diligently"},
+  {ar:"يعمل", tr:"yaʿmal", en:"He works", type:"verb", book:2, unit:1, ex:"يعمل في مكتب كبير", exEn:"He works in a big office"},
+  {ar:"يسافر", tr:"yusāfir", en:"He travels", type:"verb", book:2, unit:1, ex:"يسافر إلى مصر كل صيف", exEn:"He travels to Egypt every summer"},
+  {ar:"يفهم", tr:"yafham", en:"He understands", type:"verb", book:2, unit:1, ex:"لا أفهم هذه الكلمة", exEn:"I don't understand this word"},
+  {ar:"يساعد", tr:"yusāʿid", en:"He helps", type:"verb", book:2, unit:1, ex:"يساعد أصدقاءه دائماً", exEn:"He always helps his friends"},
+  {ar:"ينام", tr:"yanām", en:"He sleeps", type:"verb", book:2, unit:1, ex:"ينام مبكراً في الليل", exEn:"He sleeps early at night"},
+  {ar:"يلعب", tr:"yalʿab", en:"He plays", type:"verb", book:2, unit:1, ex:"يلعب كرة القدم مع أصدقائه", exEn:"He plays football with his friends"},
+  {ar:"يطبخ", tr:"yaṭbukh", en:"He cooks", type:"verb", book:2, unit:1, ex:"يطبخ طعاماً لذيذاً", exEn:"He cooks delicious food"},
+  {ar:"يغسل", tr:"yaghasil", en:"He washes", type:"verb", book:2, unit:1, ex:"يغسل يديه قبل الأكل", exEn:"He washes his hands before eating"},
+  {ar:"يجلس", tr:"yajlis", en:"He sits", type:"verb", book:2, unit:1, ex:"يجلس أمام الكمبيوتر", exEn:"He sits in front of the computer"},
+  {ar:"يقف", tr:"yaqif", en:"He stands", type:"verb", book:2, unit:1, ex:"يقف أمام الباب", exEn:"He stands in front of the door"},
+  {ar:"يركب", tr:"yarkab", en:"He rides / takes (transport)", type:"verb", book:2, unit:1, ex:"يركب الحافلة كل يوم", exEn:"He takes the bus every day"},
+  {ar:"يرجع", tr:"yarjiʿ", en:"He returns / comes back", type:"verb", book:2, unit:1, ex:"يرجع إلى البيت عند المساء", exEn:"He returns home in the evening"},
+  {ar:"يفتح", tr:"yaftaḥ", en:"He opens", type:"verb", book:2, unit:1, ex:"يفتح الباب بالمفتاح", exEn:"He opens the door with the key"},
+  {ar:"يغلق", tr:"yughliqu", en:"He closes", type:"verb", book:2, unit:1, ex:"يغلق النافذة بسبب البرد", exEn:"He closes the window because of the cold"},
+  {ar:"دائماً", tr:"dāʾiman", en:"Always", type:"phrase", book:2, unit:1, ex:"هو دائماً مبتسم", exEn:"He is always smiling"},
+  {ar:"أحياناً", tr:"aḥyānan", en:"Sometimes", type:"phrase", book:2, unit:1, ex:"أحياناً أذهب مشياً", exEn:"Sometimes I walk"},
+  {ar:"كل يوم", tr:"kull yawm", en:"Every day", type:"phrase", book:2, unit:1, ex:"أدرس العربية كل يوم", exEn:"I study Arabic every day"},
+  {ar:"مبكراً", tr:"mubakkiran", en:"Early", type:"phrase", book:2, unit:1, ex:"يذهب إلى العمل مبكراً", exEn:"He goes to work early"},
+  {ar:"متأخراً", tr:"mutaʾakhkhiran", en:"Late", type:"phrase", book:2, unit:1, ex:"رجع إلى البيت متأخراً", exEn:"He returned home late"},
+
+  // ── Book 2 · Unit 2 — Food & Meals ───────────────────
+  {ar:"طعام", tr:"ṭaʿām", en:"Food", type:"noun", book:2, unit:2, ex:"الطعام المصري لذيذ", exEn:"Egyptian food is delicious"},
+  {ar:"وجبة", tr:"wajba", en:"Meal", type:"noun", book:2, unit:2, ex:"نأكل ثلاث وجبات يومياً", exEn:"We eat three meals daily"},
+  {ar:"فطور", tr:"fuṭūr", en:"Breakfast", type:"noun", book:2, unit:2, ex:"أكل الفطور مهم", exEn:"Eating breakfast is important"},
+  {ar:"غداء", tr:"ghadāʾ", en:"Lunch", type:"noun", book:2, unit:2, ex:"نأكل الغداء في الظهر", exEn:"We eat lunch at noon"},
+  {ar:"عشاء", tr:"ʿashāʾ", en:"Dinner", type:"noun", book:2, unit:2, ex:"العشاء في الساعة الثامنة", exEn:"Dinner is at eight o'clock"},
+  {ar:"ماء", tr:"māʾ", en:"Water", type:"noun", book:2, unit:2, ex:"أريد كوب ماء", exEn:"I want a cup of water"},
+  {ar:"عصير", tr:"ʿaṣīr", en:"Juice", type:"noun", book:2, unit:2, ex:"أريد عصير برتقال", exEn:"I want orange juice"},
+  {ar:"قهوة", tr:"qahwa", en:"Coffee", type:"noun", book:2, unit:2, ex:"القهوة العربية لذيذة", exEn:"Arabic coffee is delicious"},
+  {ar:"شاي", tr:"shāy", en:"Tea", type:"noun", book:2, unit:2, ex:"أشرب الشاي بالحليب", exEn:"I drink tea with milk"},
+  {ar:"حليب", tr:"ḥalīb", en:"Milk", type:"noun", book:2, unit:2, ex:"الحليب مفيد للصحة", exEn:"Milk is good for health"},
+  {ar:"خبز", tr:"khubz", en:"Bread", type:"noun", book:2, unit:2, ex:"الخبز المصري مشهور", exEn:"Egyptian bread is famous"},
+  {ar:"أرز", tr:"aruzz", en:"Rice", type:"noun", book:2, unit:2, ex:"نأكل الأرز مع اللحم", exEn:"We eat rice with meat"},
+  {ar:"لحم", tr:"laḥm", en:"Meat", type:"noun", book:2, unit:2, ex:"أحب اللحم المشوي", exEn:"I love grilled meat"},
+  {ar:"دجاج", tr:"dajāj", en:"Chicken", type:"noun", book:2, unit:2, ex:"الدجاج المشوي لذيذ", exEn:"Grilled chicken is delicious"},
+  {ar:"سمك", tr:"samak", en:"Fish", type:"noun", book:2, unit:2, ex:"يحب أكل السمك", exEn:"He loves eating fish"},
+  {ar:"بيض", tr:"bayḍ", en:"Eggs", type:"noun", book:2, unit:2, ex:"آكل البيض في الفطور", exEn:"I eat eggs for breakfast"},
+  {ar:"جبن", tr:"jubun", en:"Cheese", type:"noun", book:2, unit:2, ex:"الجبن المصري لذيذ", exEn:"Egyptian cheese is delicious"},
+  {ar:"خضروات", tr:"khuḍrawāt", en:"Vegetables", type:"noun", book:2, unit:2, ex:"الخضروات مفيدة للصحة", exEn:"Vegetables are good for health"},
+  {ar:"فاكهة", tr:"fākiha", en:"Fruit", type:"noun", book:2, unit:2, ex:"الفاكهة المصرية طازجة", exEn:"Egyptian fruit is fresh"},
+  {ar:"تفاحة", tr:"tuffāḥa", en:"Apple", type:"noun", book:2, unit:2, ex:"أكلت تفاحة حمراء", exEn:"I ate a red apple"},
+  {ar:"موز", tr:"mawz", en:"Banana", type:"noun", book:2, unit:2, ex:"الموز فاكهة مغذية", exEn:"Banana is a nutritious fruit"},
+  {ar:"برتقال", tr:"burtuqāl", en:"Orange", type:"noun", book:2, unit:2, ex:"عصير البرتقال لذيذ", exEn:"Orange juice is delicious"},
+  {ar:"طماطم", tr:"ṭamāṭim", en:"Tomatoes", type:"noun", book:2, unit:2, ex:"السلطة فيها طماطم", exEn:"The salad has tomatoes"},
+  {ar:"سلطة", tr:"salaṭa", en:"Salad", type:"noun", book:2, unit:2, ex:"أكل السلطة صحي", exEn:"Eating salad is healthy"},
+  {ar:"حلو", tr:"ḥulw", en:"Sweet / Dessert", type:"adj", book:2, unit:2, ex:"أحب الحلويات", exEn:"I love sweets"},
+  {ar:"لذيذ", tr:"ladhīdh", en:"Delicious", type:"adj", book:2, unit:2, ex:"هذا الطعام لذيذ جداً", exEn:"This food is very delicious"},
+  {ar:"حار", tr:"ḥārr", en:"Hot / Spicy", type:"adj", book:2, unit:2, ex:"الأكل الهندي حار", exEn:"Indian food is spicy"},
+  {ar:"بارد", tr:"bārid", en:"Cold", type:"adj", book:2, unit:2, ex:"الماء بارد", exEn:"The water is cold"},
+  {ar:"سعر", tr:"siʿr", en:"Price", type:"noun", book:2, unit:2, ex:"كم السعر؟", exEn:"What is the price?"},
+  {ar:"يريد", tr:"yurīd", en:"He wants", type:"verb", book:2, unit:2, ex:"يريد شراء كتاب", exEn:"He wants to buy a book"},
+
+  // ── Book 2 · Unit 3 — Shopping & Money ───────────────
+  {ar:"متجر", tr:"matjar", en:"Shop / Store", type:"noun", book:2, unit:3, ex:"المتجر قريب من البيت", exEn:"The shop is near the house"},
+  {ar:"دكان", tr:"dukkān", en:"Small shop", type:"noun", book:2, unit:3, ex:"اشتريت من الدكان", exEn:"I bought from the small shop"},
+  {ar:"يشتري", tr:"yashtarī", en:"He buys", type:"verb", book:2, unit:3, ex:"يشتري الخضار من السوق", exEn:"He buys vegetables from the market"},
+  {ar:"يبيع", tr:"yabīʿ", en:"He sells", type:"verb", book:2, unit:3, ex:"يبيع الملابس في السوق", exEn:"He sells clothes in the market"},
+  {ar:"يدفع", tr:"yadfaʿ", en:"He pays", type:"verb", book:2, unit:3, ex:"يدفع بالبطاقة", exEn:"He pays by card"},
+  {ar:"ثمن", tr:"thaman", en:"Price / Cost", type:"noun", book:2, unit:3, ex:"كم ثمن هذا الكتاب؟", exEn:"How much does this book cost?"},
+  {ar:"غالي", tr:"ghālī", en:"Expensive", type:"adj", book:2, unit:3, ex:"هذا الكتاب غالي", exEn:"This book is expensive"},
+  {ar:"رخيص", tr:"rakhīṣ", en:"Cheap", type:"adj", book:2, unit:3, ex:"الخضار رخيصة في السوق", exEn:"Vegetables are cheap in the market"},
+  {ar:"مجاني", tr:"majjānī", en:"Free (no cost)", type:"adj", book:2, unit:3, ex:"الدخول مجاني", exEn:"Entry is free"},
+  {ar:"نقود", tr:"nuqūd", en:"Money / Cash", type:"noun", book:2, unit:3, ex:"معي نقود كافية", exEn:"I have enough money"},
+  {ar:"دولار", tr:"dūlār", en:"Dollar", type:"noun", book:2, unit:3, ex:"الكتاب بعشرة دولارات", exEn:"The book costs ten dollars"},
+  {ar:"جنيه", tr:"junayh", en:"Pound (Egyptian)", type:"noun", book:2, unit:3, ex:"الجنيه المصري عملة مصر", exEn:"The Egyptian pound is Egypt's currency"},
+  {ar:"بطاقة", tr:"biṭāqa", en:"Card", type:"noun", book:2, unit:3, ex:"أدفع بالبطاقة الائتمانية", exEn:"I pay by credit card"},
+  {ar:"فاتورة", tr:"fātūra", en:"Bill / Invoice", type:"noun", book:2, unit:3, ex:"أعطني الفاتورة من فضلك", exEn:"Give me the bill please"},
+  {ar:"ملابس", tr:"malābis", en:"Clothes", type:"noun", book:2, unit:3, ex:"اشتريت ملابس جديدة", exEn:"I bought new clothes"},
+  {ar:"قميص", tr:"qamīṣ", en:"Shirt", type:"noun", book:2, unit:3, ex:"هذا قميص جميل", exEn:"This is a beautiful shirt"},
+  {ar:"بنطال", tr:"banṭal", en:"Trousers / Pants", type:"noun", book:2, unit:3, ex:"البنطال الأزرق مناسب", exEn:"The blue trousers are appropriate"},
+  {ar:"حذاء", tr:"ḥidhāʾ", en:"Shoe", type:"noun", book:2, unit:3, ex:"اشتريت حذاءً جديداً", exEn:"I bought new shoes"},
+  {ar:"مقاس", tr:"maqās", en:"Size", type:"noun", book:2, unit:3, ex:"ما مقاسك؟", exEn:"What is your size?"},
+
+  // ── Book 2 · Unit 4 — Travel & Transport ─────────────
+  {ar:"سفر", tr:"safar", en:"Travel / Trip", type:"noun", book:2, unit:4, ex:"أحب السفر كثيراً", exEn:"I love traveling a lot"},
+  {ar:"طائرة", tr:"ṭāʾira", en:"Airplane", type:"noun", book:2, unit:4, ex:"ركبنا الطائرة إلى مصر", exEn:"We took the airplane to Egypt"},
+  {ar:"مطار", tr:"maṭār", en:"Airport", type:"noun", book:2, unit:4, ex:"المطار بعيد عن المدينة", exEn:"The airport is far from the city"},
+  {ar:"فندق", tr:"funduq", en:"Hotel", type:"noun", book:2, unit:4, ex:"الفندق فخم وجميل", exEn:"The hotel is luxurious and beautiful"},
+  {ar:"جواز سفر", tr:"jawwāz safar", en:"Passport", type:"noun", book:2, unit:4, ex:"لا تنسَ جواز سفرك", exEn:"Don't forget your passport"},
+  {ar:"تذكرة", tr:"tadhkira", en:"Ticket", type:"noun", book:2, unit:4, ex:"اشتريت تذكرة الطائرة", exEn:"I bought the plane ticket"},
+  {ar:"حقيبة", tr:"ḥaqība", en:"Bag / Suitcase", type:"noun", book:2, unit:4, ex:"حقيبتي ثقيلة", exEn:"My bag is heavy"},
+  {ar:"حافلة", tr:"ḥāfila", en:"Bus", type:"noun", book:2, unit:4, ex:"أركب الحافلة كل يوم", exEn:"I take the bus every day"},
+  {ar:"قطار", tr:"qiṭār", en:"Train", type:"noun", book:2, unit:4, ex:"القطار أسرع من الحافلة", exEn:"The train is faster than the bus"},
+  {ar:"سيارة", tr:"sayyāra", en:"Car", type:"noun", book:2, unit:4, ex:"أبي عنده سيارة جديدة", exEn:"My father has a new car"},
+  {ar:"سيارة أجرة", tr:"sayyārat ujra", en:"Taxi", type:"noun", book:2, unit:4, ex:"ركبت سيارة أجرة إلى الفندق", exEn:"I took a taxi to the hotel"},
+  {ar:"مترو", tr:"mitrū", en:"Metro / Subway", type:"noun", book:2, unit:4, ex:"المترو سريع في القاهرة", exEn:"The metro is fast in Cairo"},
+  {ar:"محطة", tr:"maḥaṭṭa", en:"Station / Stop", type:"noun", book:2, unit:4, ex:"المحطة قريبة", exEn:"The station is near"},
+  {ar:"ميناء", tr:"mīnāʾ", en:"Port / Harbour", type:"noun", book:2, unit:4, ex:"الميناء على البحر", exEn:"The port is by the sea"},
+  {ar:"طريق", tr:"ṭarīq", en:"Road / Way", type:"noun", book:2, unit:4, ex:"الطريق إلى المطار طويل", exEn:"The road to the airport is long"},
+  {ar:"يصل", tr:"yaṣil", en:"He arrives", type:"verb", book:2, unit:4, ex:"يصل إلى المطار مبكراً", exEn:"He arrives at the airport early"},
+  {ar:"يغادر", tr:"yughādir", en:"He departs / leaves", type:"verb", book:2, unit:4, ex:"تغادر الطائرة في الساعة العاشرة", exEn:"The plane departs at ten o'clock"},
+  {ar:"يحجز", tr:"yaḥjiz", en:"He books / reserves", type:"verb", book:2, unit:4, ex:"يحجز غرفة في الفندق", exEn:"He books a room at the hotel"},
+  {ar:"يحمل", tr:"yaḥmil", en:"He carries", type:"verb", book:2, unit:4, ex:"يحمل حقيبته الثقيلة", exEn:"He carries his heavy bag"},
+  {ar:"ثقيل", tr:"thaqīl", en:"Heavy", type:"adj", book:2, unit:4, ex:"الحقيبة ثقيلة جداً", exEn:"The bag is very heavy"},
+  {ar:"خفيف", tr:"khafīf", en:"Light (not heavy)", type:"adj", book:2, unit:4, ex:"حقيبتي خفيفة", exEn:"My bag is light"},
+
+  // ── Book 2 · Unit 5 — Weather & Environment ──────────
+  {ar:"طقس", tr:"ṭaqs", en:"Weather", type:"noun", book:2, unit:5, ex:"الطقس حار في مصر", exEn:"The weather is hot in Egypt"},
+  {ar:"مناخ", tr:"manākh", en:"Climate", type:"noun", book:2, unit:5, ex:"مناخ مصر جاف", exEn:"Egypt's climate is dry"},
+  {ar:"حرارة", tr:"ḥarāra", en:"Heat / Temperature", type:"noun", book:2, unit:5, ex:"الحرارة مرتفعة اليوم", exEn:"The temperature is high today"},
+  {ar:"برودة", tr:"burūda", en:"Cold / Coldness", type:"noun", book:2, unit:5, ex:"برودة الشتاء شديدة", exEn:"The winter cold is intense"},
+  {ar:"مطر", tr:"maṭar", en:"Rain", type:"noun", book:2, unit:5, ex:"المطر نادر في مصر", exEn:"Rain is rare in Egypt"},
+  {ar:"ثلج", tr:"thalj", en:"Snow", type:"noun", book:2, unit:5, ex:"الثلج جميل في الشتاء", exEn:"Snow is beautiful in winter"},
+  {ar:"ريح", tr:"rīḥ", en:"Wind", type:"noun", book:2, unit:5, ex:"الريح قوية اليوم", exEn:"The wind is strong today"},
+  {ar:"سحاب", tr:"saḥāb", en:"Clouds", type:"noun", book:2, unit:5, ex:"السماء ممتلئة بالسحاب", exEn:"The sky is full of clouds"},
+  {ar:"شمس", tr:"shams", en:"Sun", type:"noun", book:2, unit:5, ex:"الشمس ساطعة اليوم", exEn:"The sun is bright today"},
+  {ar:"قمر", tr:"qamar", en:"Moon", type:"noun", book:2, unit:5, ex:"القمر جميل في الليل", exEn:"The moon is beautiful at night"},
+  {ar:"نجوم", tr:"nujūm", en:"Stars", type:"noun", book:2, unit:5, ex:"النجوم تلمع في الليل", exEn:"The stars shine at night"},
+  {ar:"صيف", tr:"ṣayf", en:"Summer", type:"noun", book:2, unit:5, ex:"سأزور مصر في الصيف", exEn:"I will visit Egypt in summer"},
+  {ar:"شتاء", tr:"shitāʾ", en:"Winter", type:"noun", book:2, unit:5, ex:"الشتاء في القاهرة معتدل", exEn:"Winter in Cairo is mild"},
+  {ar:"ربيع", tr:"rabīʿ", en:"Spring", type:"noun", book:2, unit:5, ex:"الربيع فصل جميل", exEn:"Spring is a beautiful season"},
+  {ar:"خريف", tr:"kharīf", en:"Autumn / Fall", type:"noun", book:2, unit:5, ex:"الخريف فصل بارد", exEn:"Autumn is a cold season"},
+  {ar:"فصل", tr:"faṣl", en:"Season", type:"noun", book:2, unit:5, ex:"ما فصلك المفضل؟", exEn:"What is your favourite season?"},
+  {ar:"معتدل", tr:"muʿtadil", en:"Moderate / Mild", type:"adj", book:2, unit:5, ex:"الطقس معتدل في الربيع", exEn:"The weather is moderate in spring"},
+  {ar:"رطب", tr:"raṭb", en:"Humid", type:"adj", book:2, unit:5, ex:"الجو رطب على الساحل", exEn:"The air is humid on the coast"},
+  {ar:"جاف", tr:"jāff", en:"Dry", type:"adj", book:2, unit:5, ex:"المناخ جاف في الصحراء", exEn:"The climate is dry in the desert"},
+  {ar:"ممطر", tr:"mumṭir", en:"Rainy", type:"adj", book:2, unit:5, ex:"الطقس ممطر في الشتاء", exEn:"The weather is rainy in winter"},
+  {ar:"صحراء", tr:"ṣaḥrāʾ", en:"Desert", type:"noun", book:2, unit:5, ex:"الصحراء تغطي معظم مصر", exEn:"The desert covers most of Egypt"},
+  {ar:"بحر", tr:"baḥr", en:"Sea", type:"noun", book:2, unit:5, ex:"البحر الأحمر جميل", exEn:"The Red Sea is beautiful"},
+  {ar:"نهر", tr:"nahr", en:"River", type:"noun", book:2, unit:5, ex:"النيل نهر عظيم", exEn:"The Nile is a great river"},
+  {ar:"جبل", tr:"jabal", en:"Mountain", type:"noun", book:2, unit:5, ex:"الجبل عالٍ", exEn:"The mountain is high"},
+
+  // ── Book 2 · Unit 6 — Health & Body ──────────────────
+  {ar:"جسم", tr:"jism", en:"Body", type:"noun", book:2, unit:6, ex:"جسم الإنسان معقد", exEn:"The human body is complex"},
+  {ar:"رأس", tr:"raʾs", en:"Head", type:"noun", book:2, unit:6, ex:"أشعر بألم في رأسي", exEn:"I feel pain in my head"},
+  {ar:"وجه", tr:"wajh", en:"Face", type:"noun", book:2, unit:6, ex:"غسل وجهه بالماء", exEn:"He washed his face with water"},
+  {ar:"عين", tr:"ʿayn", en:"Eye", type:"noun", book:2, unit:6, ex:"عيناه زرقاوان", exEn:"His eyes are blue"},
+  {ar:"أذن", tr:"udhun", en:"Ear", type:"noun", book:2, unit:6, ex:"الأذن تسمع الأصوات", exEn:"The ear hears sounds"},
+  {ar:"أنف", tr:"anf", en:"Nose", type:"noun", book:2, unit:6, ex:"أنفه أحمر من البرد", exEn:"His nose is red from the cold"},
+  {ar:"فم", tr:"fam", en:"Mouth", type:"noun", book:2, unit:6, ex:"افتح فمك", exEn:"Open your mouth"},
+  {ar:"يد", tr:"yad", en:"Hand", type:"noun", book:2, unit:6, ex:"اغسل يدك قبل الأكل", exEn:"Wash your hand before eating"},
+  {ar:"رجل", tr:"rijl", en:"Leg / Foot", type:"noun", book:2, unit:6, ex:"آلمت رجله أثناء اللعب", exEn:"His leg hurt during play"},
+  {ar:"قلب", tr:"qalb", en:"Heart", type:"noun", book:2, unit:6, ex:"القلب عضو حيوي", exEn:"The heart is a vital organ"},
+  {ar:"مريض", tr:"marīḍ", en:"Sick / Patient", type:"adj", book:2, unit:6, ex:"أنا مريض اليوم", exEn:"I am sick today"},
+  {ar:"صحة", tr:"ṣiḥḥa", en:"Health", type:"noun", book:2, unit:6, ex:"الصحة نعمة كبيرة", exEn:"Health is a great blessing"},
+  {ar:"طبيب", tr:"ṭabīb", en:"Doctor", type:"noun", book:2, unit:6, ex:"الطبيب يفحص المريض", exEn:"The doctor examines the patient"},
+  {ar:"مستشفى", tr:"mustashfā", en:"Hospital", type:"noun", book:2, unit:6, ex:"ذهب إلى المستشفى", exEn:"He went to the hospital"},
+  {ar:"دواء", tr:"dawāʾ", en:"Medicine", type:"noun", book:2, unit:6, ex:"أخذ الدواء بعد الأكل", exEn:"He took the medicine after eating"},
+  {ar:"ألم", tr:"alam", en:"Pain", type:"noun", book:2, unit:6, ex:"أشعر بألم في رأسي", exEn:"I feel pain in my head"},
+  {ar:"حمى", tr:"ḥummā", en:"Fever", type:"noun", book:2, unit:6, ex:"عنده حمى شديدة", exEn:"He has a high fever"},
+  {ar:"زكام", tr:"zukām", en:"Cold (illness)", type:"noun", book:2, unit:6, ex:"أصبت بزكام", exEn:"I caught a cold"},
+  {ar:"كحة", tr:"kuḥḥa", en:"Cough", type:"noun", book:2, unit:6, ex:"عنده كحة شديدة", exEn:"He has a severe cough"},
+  {ar:"يشعر بـ", tr:"yashʿur bi", en:"He feels (something)", type:"verb", book:2, unit:6, ex:"يشعر بالتعب", exEn:"He feels tired"},
+  {ar:"تعب", tr:"taʿab", en:"Tiredness", type:"noun", book:2, unit:6, ex:"أشعر بالتعب بعد العمل", exEn:"I feel tired after work"},
+
+  // ════════════════════════════════════════════════════
+  // BOOK 3
+  // ════════════════════════════════════════════════════
+
+  // ── Book 3 · Unit 1 — University & Education ─────────
+  {ar:"درس", tr:"dars", en:"Lesson / Class", type:"noun", book:3, unit:1, ex:"الدرس مثير للاهتمام", exEn:"The lesson is interesting"},
+  {ar:"امتحان", tr:"imtiḥān", en:"Exam / Test", type:"noun", book:3, unit:1, ex:"الامتحان صعب لكن مهم", exEn:"The exam is difficult but important"},
+  {ar:"اختبار", tr:"ikhtibār", en:"Test / Quiz", type:"noun", book:3, unit:1, ex:"كان الاختبار سهلاً", exEn:"The test was easy"},
+  {ar:"واجب", tr:"wājib", en:"Homework / Duty", type:"noun", book:3, unit:1, ex:"هل أتممت واجبك؟", exEn:"Have you finished your homework?"},
+  {ar:"نجح", tr:"najaḥa", en:"He succeeded / passed", type:"verb", book:3, unit:1, ex:"نجح في الامتحان", exEn:"He passed the exam"},
+  {ar:"رسب", tr:"rasaba", en:"He failed", type:"verb", book:3, unit:1, ex:"رسب في المادة", exEn:"He failed the subject"},
+  {ar:"تخرج", tr:"takharraja", en:"He graduated", type:"verb", book:3, unit:1, ex:"تخرج من الجامعة", exEn:"He graduated from university"},
+  {ar:"مكتبة", tr:"maktaba", en:"Library / Bookstore", type:"noun", book:3, unit:1, ex:"أقضي وقتاً في المكتبة", exEn:"I spend time in the library"},
+  {ar:"محاضرة", tr:"muḥāḍara", en:"Lecture", type:"noun", book:3, unit:1, ex:"المحاضرة تبدأ الساعة التاسعة", exEn:"The lecture starts at nine o'clock"},
+  {ar:"تخصص", tr:"takhaṣṣuṣ", en:"Major / Specialization", type:"noun", book:3, unit:1, ex:"تخصصي الطب", exEn:"My major is medicine"},
+  {ar:"كلية", tr:"kulliyya", en:"College / Faculty", type:"noun", book:3, unit:1, ex:"أدرس في كلية الطب", exEn:"I study in the faculty of medicine"},
+  {ar:"شهادة", tr:"shahāda", en:"Certificate / Degree", type:"noun", book:3, unit:1, ex:"حصل على شهادة الدكتوراه", exEn:"He obtained a doctorate degree"},
+  {ar:"دكتوراه", tr:"duktūrāh", en:"PhD / Doctorate", type:"noun", book:3, unit:1, ex:"يدرس للحصول على الدكتوراه", exEn:"He studies to get a PhD"},
+  {ar:"بكالوريوس", tr:"bakālūryūs", en:"Bachelor's degree", type:"noun", book:3, unit:1, ex:"حصل على البكالوريوس", exEn:"He got his bachelor's degree"},
+  {ar:"مادة", tr:"mādda", en:"Subject / Material", type:"noun", book:3, unit:1, ex:"الرياضيات مادة صعبة", exEn:"Mathematics is a difficult subject"},
+  {ar:"نتيجة", tr:"natīja", en:"Result", type:"noun", book:3, unit:1, ex:"ظهرت نتيجة الامتحان", exEn:"The exam result appeared"},
+  {ar:"علامة", tr:"ʿalāma", en:"Grade / Mark", type:"noun", book:3, unit:1, ex:"حصل على علامة ممتازة", exEn:"He got an excellent grade"},
+  {ar:"يحفظ", tr:"yaḥfaẓ", en:"He memorizes", type:"verb", book:3, unit:1, ex:"يحفظ الكلمات الجديدة", exEn:"He memorizes new words"},
+  {ar:"يراجع", tr:"yurājiʿ", en:"He reviews / revises", type:"verb", book:3, unit:1, ex:"يراجع دروسه قبل الامتحان", exEn:"He revises his lessons before the exam"},
+  {ar:"يتقن", tr:"yutqin", en:"He masters", type:"verb", book:3, unit:1, ex:"يتقن اللغة العربية", exEn:"He masters the Arabic language"},
+
+  // ── Book 3 · Unit 2 — Professions & Work ─────────────
+  {ar:"مهنة", tr:"mihna", en:"Profession / Job", type:"noun", book:3, unit:2, ex:"ما مهنتك؟", exEn:"What is your profession?"},
+  {ar:"موظف", tr:"muwaẓẓaf", en:"Employee", type:"noun", book:3, unit:2, ex:"هو موظف في البنك", exEn:"He is an employee at the bank"},
+  {ar:"مهندس", tr:"muhandis", en:"Engineer", type:"noun", book:3, unit:2, ex:"أخي مهندس كمبيوتر", exEn:"My brother is a computer engineer"},
+  {ar:"محامي", tr:"muḥāmī", en:"Lawyer", type:"noun", book:3, unit:2, ex:"المحامي يدافع عن موكله", exEn:"The lawyer defends his client"},
+  {ar:"معلم", tr:"muʿallim", en:"Teacher (m)", type:"noun", book:3, unit:2, ex:"المعلم يشرح الدرس", exEn:"The teacher explains the lesson"},
+  {ar:"معلمة", tr:"muʿallima", en:"Teacher (f)", type:"noun", book:3, unit:2, ex:"المعلمة محبوبة", exEn:"The teacher (f) is loved"},
+  {ar:"طبيب", tr:"ṭabīb", en:"Doctor", type:"noun", book:3, unit:2, ex:"أريد أن أصبح طبيباً", exEn:"I want to become a doctor"},
+  {ar:"ممرضة", tr:"mumarriḍa", en:"Nurse (f)", type:"noun", book:3, unit:2, ex:"الممرضة تهتم بالمرضى", exEn:"The nurse cares for patients"},
+  {ar:"مدير", tr:"mudīr", en:"Manager / Director", type:"noun", book:3, unit:2, ex:"المدير في اجتماع", exEn:"The manager is in a meeting"},
+  {ar:"تاجر", tr:"tājir", en:"Merchant / Trader", type:"noun", book:3, unit:2, ex:"جدي كان تاجراً مشهوراً", exEn:"My grandfather was a famous merchant"},
+  {ar:"محاسب", tr:"muḥāsib", en:"Accountant", type:"noun", book:3, unit:2, ex:"يعمل محاسباً في شركة", exEn:"He works as an accountant in a company"},
+  {ar:"صحفي", tr:"ṣuḥufī", en:"Journalist", type:"noun", book:3, unit:2, ex:"الصحفي يكتب المقالات", exEn:"The journalist writes articles"},
+  {ar:"فنان", tr:"fannān", en:"Artist", type:"noun", book:3, unit:2, ex:"الفنان يرسم لوحات جميلة", exEn:"The artist draws beautiful paintings"},
+  {ar:"راتب", tr:"rātib", en:"Salary", type:"noun", book:3, unit:2, ex:"يتقاضى راتباً جيداً", exEn:"He receives a good salary"},
+  {ar:"شركة", tr:"sharika", en:"Company", type:"noun", book:3, unit:2, ex:"تعمل في شركة كبيرة", exEn:"She works in a big company"},
+  {ar:"مكتب", tr:"maktab", en:"Office / Desk", type:"noun", book:3, unit:2, ex:"مكتبه في الطابق الثالث", exEn:"His office is on the third floor"},
+  {ar:"اجتماع", tr:"ijtimāʿ", en:"Meeting", type:"noun", book:3, unit:2, ex:"الاجتماع في الساعة الثانية", exEn:"The meeting is at two o'clock"},
+  {ar:"وظيفة", tr:"waẓīfa", en:"Job / Position", type:"noun", book:3, unit:2, ex:"وجد وظيفة جيدة", exEn:"He found a good job"},
+  {ar:"يعيّن", tr:"yuʿayyin", en:"He appoints / hires", type:"verb", book:3, unit:2, ex:"تم تعيينه في الشركة", exEn:"He was appointed at the company"},
+  {ar:"يستقيل", tr:"yastaqīl", en:"He resigns", type:"verb", book:3, unit:2, ex:"استقال من عمله", exEn:"He resigned from his job"},
+
+  // ── Book 3 · Unit 3 — Egyptian Culture & Society ──────
+  {ar:"ثقافة", tr:"thaqāfa", en:"Culture", type:"noun", book:3, unit:3, ex:"الثقافة العربية غنية", exEn:"Arab culture is rich"},
+  {ar:"تاريخ", tr:"tārīkh", en:"History / Date", type:"noun", book:3, unit:3, ex:"تاريخ مصر طويل", exEn:"Egypt's history is long"},
+  {ar:"حضارة", tr:"ḥaḍāra", en:"Civilization", type:"noun", book:3, unit:3, ex:"الحضارة المصرية عريقة", exEn:"Egyptian civilization is ancient"},
+  {ar:"نيل", tr:"nīl", en:"Nile (River)", type:"noun", book:3, unit:3, ex:"النيل أطول نهر في العالم", exEn:"The Nile is the longest river in the world"},
+  {ar:"أهرام", tr:"ahrām", en:"Pyramids", type:"noun", book:3, unit:3, ex:"الأهرام من عجائب الدنيا", exEn:"The pyramids are one of the wonders of the world"},
+  {ar:"فرعون", tr:"firʿawn", en:"Pharaoh", type:"noun", book:3, unit:3, ex:"الفراعنة حكموا مصر قديماً", exEn:"The pharaohs ruled Egypt in ancient times"},
+  {ar:"معبد", tr:"maʿbad", en:"Temple", type:"noun", book:3, unit:3, ex:"معابد الأقصر رائعة", exEn:"The temples of Luxor are magnificent"},
+  {ar:"أهل", tr:"ahl", en:"Family / People of", type:"noun", book:3, unit:3, ex:"أهل مصر كرماء", exEn:"The people of Egypt are generous"},
+  {ar:"عادة", tr:"ʿāda", en:"Custom / Habit", type:"noun", book:3, unit:3, ex:"من عاداتنا احترام الكبير", exEn:"One of our customs is respecting elders"},
+  {ar:"تقليد", tr:"taqlīd", en:"Tradition", type:"noun", book:3, unit:3, ex:"التقاليد العربية جميلة", exEn:"Arab traditions are beautiful"},
+  {ar:"شعب", tr:"shaʿb", en:"People / Nation", type:"noun", book:3, unit:3, ex:"الشعب المصري كريم", exEn:"The Egyptian people are generous"},
+  {ar:"دين", tr:"dīn", en:"Religion", type:"noun", book:3, unit:3, ex:"الإسلام دين السلام", exEn:"Islam is the religion of peace"},
+  {ar:"رمضان", tr:"ramaḍān", en:"Ramadan", type:"noun", book:3, unit:3, ex:"رمضان شهر الصيام", exEn:"Ramadan is the month of fasting"},
+  {ar:"صيام", tr:"ṣiyām", en:"Fasting", type:"noun", book:3, unit:3, ex:"الصيام ركن من أركان الإسلام", exEn:"Fasting is a pillar of Islam"},
+  {ar:"عيد", tr:"ʿīd", en:"Feast / Holiday", type:"noun", book:3, unit:3, ex:"عيد الفطر بعد رمضان", exEn:"Eid al-Fitr is after Ramadan"},
+  {ar:"كرم", tr:"karam", en:"Generosity", type:"noun", book:3, unit:3, ex:"الكرم صفة العرب", exEn:"Generosity is a trait of Arabs"},
+  {ar:"ضيافة", tr:"ḍiyāfa", en:"Hospitality", type:"noun", book:3, unit:3, ex:"الضيافة العربية مشهورة", exEn:"Arab hospitality is famous"},
+  {ar:"موسيقى", tr:"mūsīqā", en:"Music", type:"noun", book:3, unit:3, ex:"الموسيقى العربية جميلة", exEn:"Arabic music is beautiful"},
+  {ar:"أم كلثوم", tr:"umm kulthūm", en:"Umm Kulthum (famous singer)", type:"noun", book:3, unit:3, ex:"أم كلثوم مطربة مصرية عظيمة", exEn:"Umm Kulthum is a great Egyptian singer"},
+
+  // ── Book 3 · Unit 4 — Media & Communication ──────────
+  {ar:"جريدة", tr:"jarīda", en:"Newspaper", type:"noun", book:3, unit:4, ex:"يقرأ الجريدة كل صباح", exEn:"He reads the newspaper every morning"},
+  {ar:"مجلة", tr:"majalla", en:"Magazine", type:"noun", book:3, unit:4, ex:"المجلة فيها مقالات مفيدة", exEn:"The magazine has useful articles"},
+  {ar:"تلفزيون", tr:"tilfiziyūn", en:"Television", type:"noun", book:3, unit:4, ex:"يشاهد التلفزيون في المساء", exEn:"He watches television in the evening"},
+  {ar:"راديو", tr:"rādyū", en:"Radio", type:"noun", book:3, unit:4, ex:"يسمع الراديو أثناء القيادة", exEn:"He listens to the radio while driving"},
+  {ar:"إنترنت", tr:"intarnit", en:"Internet", type:"noun", book:3, unit:4, ex:"يستخدم الإنترنت للبحث", exEn:"He uses the internet for research"},
+  {ar:"هاتف", tr:"hātif", en:"Phone", type:"noun", book:3, unit:4, ex:"هاتفه الجديد ذكي", exEn:"His new phone is smart"},
+  {ar:"رسالة", tr:"risāla", en:"Message / Letter", type:"noun", book:3, unit:4, ex:"أرسل رسالة لصديقه", exEn:"He sent a message to his friend"},
+  {ar:"بريد", tr:"barīd", en:"Mail / Post", type:"noun", book:3, unit:4, ex:"وصل البريد اليوم", exEn:"The mail arrived today"},
+  {ar:"خبر", tr:"khabar", en:"News", type:"noun", book:3, unit:4, ex:"سمعت خبراً جيداً", exEn:"I heard good news"},
+  {ar:"أخبار", tr:"akhbār", en:"News (plural)", type:"noun", book:3, unit:4, ex:"يتابع الأخبار كل يوم", exEn:"He follows the news every day"},
+  {ar:"مقال", tr:"maqāl", en:"Article", type:"noun", book:3, unit:4, ex:"كتب مقالاً في الجريدة", exEn:"He wrote an article in the newspaper"},
+  {ar:"يتصل", tr:"yattaṣil", en:"He calls / contacts", type:"verb", book:3, unit:4, ex:"يتصل بأصدقائه يومياً", exEn:"He calls his friends daily"},
+  {ar:"يرسل", tr:"yursil", en:"He sends", type:"verb", book:3, unit:4, ex:"يرسل رسائل عبر الهاتف", exEn:"He sends messages via phone"},
+  {ar:"يستخدم", tr:"yastakhdam", en:"He uses", type:"verb", book:3, unit:4, ex:"يستخدم الكمبيوتر للعمل", exEn:"He uses the computer for work"},
+  {ar:"يبحث", tr:"yabḥath", en:"He searches / researches", type:"verb", book:3, unit:4, ex:"يبحث عن المعلومات في الإنترنت", exEn:"He searches for information on the internet"},
+
+  // ── Book 3 · Unit 5 — Opinions & Discussion ──────────
+  {ar:"رأي", tr:"raʾy", en:"Opinion", type:"noun", book:3, unit:5, ex:"ما رأيك في هذا؟", exEn:"What is your opinion on this?"},
+  {ar:"فكرة", tr:"fikra", en:"Idea", type:"noun", book:3, unit:5, ex:"هذه فكرة ممتازة", exEn:"This is an excellent idea"},
+  {ar:"يعتقد", tr:"yaʿtaqid", en:"He believes / thinks", type:"verb", book:3, unit:5, ex:"يعتقد أن الدراسة مهمة", exEn:"He believes that studying is important"},
+  {ar:"يتفق", tr:"yattafiq", en:"He agrees", type:"verb", book:3, unit:5, ex:"أتفق مع رأيك", exEn:"I agree with your opinion"},
+  {ar:"يختلف", tr:"yakhtalif", en:"He disagrees", type:"verb", book:3, unit:5, ex:"أختلف معك في هذه المسألة", exEn:"I disagree with you on this matter"},
+  {ar:"مشكلة", tr:"mushkila", en:"Problem", type:"noun", book:3, unit:5, ex:"هذه مشكلة كبيرة", exEn:"This is a big problem"},
+  {ar:"حل", tr:"ḥall", en:"Solution", type:"noun", book:3, unit:5, ex:"وجدنا حلاً للمشكلة", exEn:"We found a solution to the problem"},
+  {ar:"سبب", tr:"sabab", en:"Reason / Cause", type:"noun", book:3, unit:5, ex:"ما سبب غيابك؟", exEn:"What is the reason for your absence?"},
+  {ar:"نتيجة", tr:"natīja", en:"Result / Consequence", type:"noun", book:3, unit:5, ex:"نتيجة الجهد النجاح", exEn:"The result of effort is success"},
+  {ar:"ربما", tr:"rubbamā", en:"Perhaps / Maybe", type:"phrase", book:3, unit:5, ex:"ربما يأتي غداً", exEn:"Perhaps he will come tomorrow"},
+  {ar:"بالتأكيد", tr:"bit-taʾkīd", en:"Certainly / Of course", type:"phrase", book:3, unit:5, ex:"بالتأكيد سأساعدك", exEn:"Of course I will help you"},
+  {ar:"في الواقع", tr:"fī l-wāqiʿ", en:"In fact / Actually", type:"phrase", book:3, unit:5, ex:"في الواقع الأمر مختلف", exEn:"In fact the matter is different"},
+  {ar:"من ناحية أخرى", tr:"min nāḥiya ukhrā", en:"On the other hand", type:"phrase", book:3, unit:5, ex:"من ناحية أخرى هناك فوائد", exEn:"On the other hand there are benefits"},
+  {ar:"بالإضافة إلى", tr:"bil-iḍāfa ilā", en:"In addition to", type:"phrase", book:3, unit:5, ex:"بالإضافة إلى ذلك هناك أسباب أخرى", exEn:"In addition to that there are other reasons"},
+  {ar:"لذلك", tr:"li-dhālika", en:"Therefore / That is why", type:"phrase", book:3, unit:5, ex:"لذلك قررت الدراسة أكثر", exEn:"Therefore I decided to study more"},
+  {ar:"مع ذلك", tr:"maʿa dhālika", en:"Nevertheless / Even so", type:"phrase", book:3, unit:5, ex:"مع ذلك لن أستسلم", exEn:"Nevertheless I will not give up"},
+  {ar:"أظن", tr:"aẓunnu", en:"I think / I believe", type:"phrase", book:3, unit:5, ex:"أظن أن هذا صحيح", exEn:"I think this is correct"},
+  {ar:"من وجهة نظري", tr:"min wujhat naẓarī", en:"From my point of view", type:"phrase", book:3, unit:5, ex:"من وجهة نظري هذا خطأ", exEn:"From my point of view this is wrong"},
+
+  // ════════════════════════════════════════════════════
+  // BOOK 4
+  // ════════════════════════════════════════════════════
+
+  // ── Book 4 · Unit 1 — Advanced Grammar & Expression ──
+  {ar:"نحو", tr:"naḥw", en:"Grammar / Syntax", type:"noun", book:4, unit:1, ex:"النحو العربي صعب لكن مهم", exEn:"Arabic grammar is difficult but important"},
+  {ar:"صرف", tr:"ṣarf", en:"Morphology (word forms)", type:"noun", book:4, unit:1, ex:"علم الصرف يدرس الأوزان", exEn:"Morphology studies word patterns"},
+  {ar:"جملة", tr:"jumla", en:"Sentence", type:"noun", book:4, unit:1, ex:"اكتب جملة مفيدة", exEn:"Write a useful sentence"},
+  {ar:"فعل", tr:"fiʿl", en:"Verb", type:"noun", book:4, unit:1, ex:"الفعل أساس الجملة", exEn:"The verb is the basis of the sentence"},
+  {ar:"اسم", tr:"ism", en:"Noun / Name", type:"noun", book:4, unit:1, ex:"الاسم يدل على شيء", exEn:"A noun refers to a thing"},
+  {ar:"صفة", tr:"ṣifa", en:"Adjective / Description", type:"noun", book:4, unit:1, ex:"الصفة تصف الاسم", exEn:"The adjective describes the noun"},
+  {ar:"ضمير", tr:"ḍamīr", en:"Pronoun", type:"noun", book:4, unit:1, ex:"أنا ضمير المتكلم", exEn:"'I' is a first-person pronoun"},
+  {ar:"مضارع", tr:"muḍāriʿ", en:"Present tense", type:"noun", book:4, unit:1, ex:"الفعل المضارع يدل على الحال", exEn:"The present tense indicates current action"},
+  {ar:"ماضي", tr:"māḍī", en:"Past tense", type:"noun", book:4, unit:1, ex:"الفعل الماضي انتهى وقته", exEn:"The past tense action has ended"},
+  {ar:"مستقبل", tr:"mustaqbal", en:"Future / Future tense", type:"noun", book:4, unit:1, ex:"المستقبل لم يأتِ بعد", exEn:"The future has not yet come"},
+  {ar:"مفرد", tr:"mufrad", en:"Singular", type:"noun", book:4, unit:1, ex:"كلمة كتاب مفردة", exEn:"The word 'book' is singular"},
+  {ar:"مثنى", tr:"muthannā", en:"Dual", type:"noun", book:4, unit:1, ex:"كتابان هو المثنى", exEn:"Two books is the dual form"},
+  {ar:"جمع", tr:"jamʿ", en:"Plural", type:"noun", book:4, unit:1, ex:"كتب هو جمع كتاب", exEn:"'Books' is the plural of 'book'"},
+  {ar:"مذكر", tr:"mudhakkar", en:"Masculine", type:"noun", book:4, unit:1, ex:"طالب كلمة مذكر", exEn:"'Student (m)' is a masculine word"},
+  {ar:"مؤنث", tr:"muʾannath", en:"Feminine", type:"noun", book:4, unit:1, ex:"طالبة كلمة مؤنث", exEn:"'Student (f)' is a feminine word"},
+
+  // ── Book 4 · Unit 2 — Environment & Global Issues ────
+  {ar:"بيئة", tr:"bīʾa", en:"Environment", type:"noun", book:4, unit:2, ex:"يجب أن نحافظ على البيئة", exEn:"We must protect the environment"},
+  {ar:"تلوث", tr:"talawwuth", en:"Pollution", type:"noun", book:4, unit:2, ex:"التلوث مشكلة عالمية", exEn:"Pollution is a global problem"},
+  {ar:"طاقة", tr:"ṭāqa", en:"Energy", type:"noun", book:4, unit:2, ex:"الطاقة الشمسية مفيدة", exEn:"Solar energy is useful"},
+  {ar:"تدوير", tr:"tadwīr", en:"Recycling", type:"noun", book:4, unit:2, ex:"التدوير يحافظ على الموارد", exEn:"Recycling preserves resources"},
+  {ar:"مياه", tr:"miyāh", en:"Water (formal plural)", type:"noun", book:4, unit:2, ex:"المياه النظيفة حق للجميع", exEn:"Clean water is a right for all"},
+  {ar:"غابة", tr:"ghāba", en:"Forest", type:"noun", book:4, unit:2, ex:"الغابات رئة الأرض", exEn:"Forests are the lungs of the earth"},
+  {ar:"حيوان", tr:"ḥayawān", en:"Animal", type:"noun", book:4, unit:2, ex:"حيوانات كثيرة مهددة بالانقراض", exEn:"Many animals are threatened with extinction"},
+  {ar:"انقراض", tr:"inqirāḍ", en:"Extinction", type:"noun", book:4, unit:2, ex:"الانقراض خطر على التنوع البيولوجي", exEn:"Extinction is a danger to biodiversity"},
+  {ar:"احترار", tr:"iḥtirār", en:"Warming", type:"noun", book:4, unit:2, ex:"الاحترار العالمي مشكلة خطيرة", exEn:"Global warming is a serious problem"},
+  {ar:"يحافظ على", tr:"yuḥāfiẓ ʿalā", en:"He preserves / protects", type:"verb", book:4, unit:2, ex:"يحافظ على البيئة", exEn:"He protects the environment"},
+  {ar:"يعيد", tr:"yuʿīd", en:"He returns / repeats", type:"verb", book:4, unit:2, ex:"يعيد استخدام الورق", exEn:"He reuses paper"},
+  {ar:"عالمي", tr:"ʿālamī", en:"Global / International", type:"adj", book:4, unit:2, ex:"الاحترار العالمي يؤثر على الجميع", exEn:"Global warming affects everyone"},
+  {ar:"محلي", tr:"maḥallī", en:"Local", type:"adj", book:4, unit:2, ex:"المنتجات المحلية أفضل", exEn:"Local products are better"},
+
+  // ── Book 4 · Unit 3 — Politics & Society ─────────────
+  {ar:"حكومة", tr:"ḥukūma", en:"Government", type:"noun", book:4, unit:3, ex:"الحكومة تتخذ القرارات", exEn:"The government makes decisions"},
+  {ar:"رئيس", tr:"raʾīs", en:"President / Head / Chief", type:"noun", book:4, unit:3, ex:"رئيس الجمهورية يخطب", exEn:"The president gives a speech"},
+  {ar:"وزير", tr:"wazīr", en:"Minister", type:"noun", book:4, unit:3, ex:"وزير التعليم يعلن خطة جديدة", exEn:"The minister of education announces a new plan"},
+  {ar:"برلمان", tr:"barlamān", en:"Parliament", type:"noun", book:4, unit:3, ex:"البرلمان يشرّع القوانين", exEn:"Parliament legislates laws"},
+  {ar:"قانون", tr:"qānūn", en:"Law", type:"noun", book:4, unit:3, ex:"القانون يحمي الجميع", exEn:"The law protects everyone"},
+  {ar:"انتخابات", tr:"intikhābāt", en:"Elections", type:"noun", book:4, unit:3, ex:"الانتخابات تجري كل أربع سنوات", exEn:"Elections are held every four years"},
+  {ar:"ديمقراطية", tr:"dīmuqrāṭiyya", en:"Democracy", type:"noun", book:4, unit:3, ex:"الديمقراطية نظام سياسي", exEn:"Democracy is a political system"},
+  {ar:"مجتمع", tr:"mujtamaʿ", en:"Society / Community", type:"noun", book:4, unit:3, ex:"المجتمع العربي متنوع", exEn:"Arab society is diverse"},
+  {ar:"سياسة", tr:"siyāsa", en:"Politics / Policy", type:"noun", book:4, unit:3, ex:"لا أحب الحديث عن السياسة", exEn:"I don't like talking about politics"},
+  {ar:"اقتصاد", tr:"iqtiṣād", en:"Economy", type:"noun", book:4, unit:3, ex:"اقتصاد مصر في تطور", exEn:"Egypt's economy is developing"},
+  {ar:"تطور", tr:"taṭawwur", en:"Development / Evolution", type:"noun", book:4, unit:3, ex:"التطور العلمي سريع", exEn:"Scientific development is fast"},
+  {ar:"فقر", tr:"faqr", en:"Poverty", type:"noun", book:4, unit:3, ex:"مكافحة الفقر هدف مهم", exEn:"Fighting poverty is an important goal"},
+  {ar:"ثروة", tr:"tharwa", en:"Wealth", type:"noun", book:4, unit:3, ex:"الثروة الطبيعية نعمة", exEn:"Natural wealth is a blessing"},
+  {ar:"عدالة", tr:"ʿadāla", en:"Justice", type:"noun", book:4, unit:3, ex:"العدالة أساس الحكم الجيد", exEn:"Justice is the basis of good governance"},
+  {ar:"حرية", tr:"ḥurriyya", en:"Freedom / Liberty", type:"noun", book:4, unit:3, ex:"الحرية حق أساسي", exEn:"Freedom is a fundamental right"},
+  {ar:"سلام", tr:"salām", en:"Peace", type:"noun", book:4, unit:3, ex:"السلام ضرورة للتقدم", exEn:"Peace is necessary for progress"},
+
+  // ── Book 4 · Unit 4 — Literature & Arts ─────────────
+  {ar:"أدب", tr:"adab", en:"Literature", type:"noun", book:4, unit:4, ex:"الأدب العربي قديم وغني", exEn:"Arabic literature is ancient and rich"},
+  {ar:"شعر", tr:"shiʿr", en:"Poetry", type:"noun", book:4, unit:4, ex:"الشعر العربي جميل", exEn:"Arabic poetry is beautiful"},
+  {ar:"شاعر", tr:"shāʿir", en:"Poet", type:"noun", book:4, unit:4, ex:"المتنبي شاعر مشهور", exEn:"Al-Mutanabbi is a famous poet"},
+  {ar:"رواية", tr:"riwāya", en:"Novel", type:"noun", book:4, unit:4, ex:"قرأت رواية طويلة", exEn:"I read a long novel"},
+  {ar:"قصة", tr:"qiṣṣa", en:"Story", type:"noun", book:4, unit:4, ex:"أحب قراءة القصص", exEn:"I love reading stories"},
+  {ar:"قصيدة", tr:"qaṣīda", en:"Poem", type:"noun", book:4, unit:4, ex:"كتب قصيدة جميلة", exEn:"He wrote a beautiful poem"},
+  {ar:"نجيب محفوظ", tr:"najīb maḥfūẓ", en:"Naguib Mahfouz (Egyptian novelist)", type:"noun", book:4, unit:4, ex:"نجيب محفوظ حاز جائزة نوبل", exEn:"Naguib Mahfouz won the Nobel Prize"},
+  {ar:"فن", tr:"fann", en:"Art", type:"noun", book:4, unit:4, ex:"الفن تعبير عن المشاعر", exEn:"Art is an expression of feelings"},
+  {ar:"رسم", tr:"rasm", en:"Drawing / Painting", type:"noun", book:4, unit:4, ex:"يحب الرسم والتلوين", exEn:"He loves drawing and coloring"},
+  {ar:"موروث", tr:"mawrūth", en:"Heritage", type:"noun", book:4, unit:4, ex:"الموروث الثقافي ثروة", exEn:"Cultural heritage is a treasure"},
+  {ar:"تراث", tr:"turāth", en:"Heritage / Legacy", type:"noun", book:4, unit:4, ex:"التراث العربي متنوع", exEn:"Arab heritage is diverse"},
+  {ar:"إبداع", tr:"ibdāʿ", en:"Creativity", type:"noun", book:4, unit:4, ex:"الإبداع لا حدود له", exEn:"Creativity has no limits"},
+  {ar:"خيال", tr:"khayāl", en:"Imagination", type:"noun", book:4, unit:4, ex:"الخيال أساس الأدب", exEn:"Imagination is the basis of literature"},
+
+  // ── Book 4 · Unit 5 — Science & Technology ───────────
+  {ar:"علم", tr:"ʿilm", en:"Science / Knowledge", type:"noun", book:4, unit:5, ex:"العلم نور والجهل ظلام", exEn:"Knowledge is light and ignorance is darkness"},
+  {ar:"تكنولوجيا", tr:"tiknūlūjiyā", en:"Technology", type:"noun", book:4, unit:5, ex:"التكنولوجيا تغير حياتنا", exEn:"Technology changes our lives"},
+  {ar:"كمبيوتر", tr:"kambiyūtar", en:"Computer", type:"noun", book:4, unit:5, ex:"يعمل على الكمبيوتر يومياً", exEn:"He works on the computer daily"},
+  {ar:"ذكاء اصطناعي", tr:"dhakāʾ iṣṭināʿī", en:"Artificial intelligence", type:"noun", book:4, unit:5, ex:"الذكاء الاصطناعي تطور سريع", exEn:"Artificial intelligence is developing fast"},
+  {ar:"اختراع", tr:"ikhtirāʿ", en:"Invention", type:"noun", book:4, unit:5, ex:"الاختراعات الحديثة مذهلة", exEn:"Modern inventions are amazing"},
+  {ar:"اكتشاف", tr:"iktishāf", en:"Discovery", type:"noun", book:4, unit:5, ex:"الاكتشافات العلمية كثيرة", exEn:"Scientific discoveries are many"},
+  {ar:"بحث علمي", tr:"baḥth ʿilmī", en:"Scientific research", type:"noun", book:4, unit:5, ex:"البحث العلمي يحتاج وقتاً", exEn:"Scientific research needs time"},
+  {ar:"فضاء", tr:"faḍāʾ", en:"Space / Outer space", type:"noun", book:4, unit:5, ex:"الفضاء واسع لا نهاية له", exEn:"Space is vast and endless"},
+  {ar:"مختبر", tr:"mukhtabar", en:"Laboratory", type:"noun", book:4, unit:5, ex:"يعمل في المختبر", exEn:"He works in the laboratory"},
+  {ar:"تجربة", tr:"tajriba", en:"Experiment / Experience", type:"noun", book:4, unit:5, ex:"أجرى تجربة علمية", exEn:"He conducted a scientific experiment"},
+  {ar:"يخترع", tr:"yakhtraʿ", en:"He invents", type:"verb", book:4, unit:5, ex:"يخترع أشياء جديدة", exEn:"He invents new things"},
+  {ar:"يطور", tr:"yuṭawwir", en:"He develops", type:"verb", book:4, unit:5, ex:"يطور برامج حاسوبية", exEn:"He develops computer programs"},
+  {ar:"يحلل", tr:"yuḥallil", en:"He analyses", type:"verb", book:4, unit:5, ex:"يحلل البيانات العلمية", exEn:"He analyses scientific data"},
+  {ar:"متقدم", tr:"mutaqaddim", en:"Advanced", type:"adj", book:4, unit:5, ex:"التكنولوجيا المتقدمة مفيدة", exEn:"Advanced technology is useful"},
+  {ar:"حديث", tr:"ḥadīth", en:"Modern / Contemporary", type:"adj", book:4, unit:5, ex:"العالم الحديث يتغير", exEn:"The modern world is changing"},
+
+  // ── Book 4 · Unit 6 — Philosophy & Abstract ──────────
+  {ar:"حياة", tr:"ḥayāt", en:"Life", type:"noun", book:4, unit:6, ex:"الحياة قصيرة فاستغلها", exEn:"Life is short so make the most of it"},
+  {ar:"موت", tr:"mawt", en:"Death", type:"noun", book:4, unit:6, ex:"الموت حق على كل نفس", exEn:"Death is the right of every soul"},
+  {ar:"وقت", tr:"waqt", en:"Time", type:"noun", book:4, unit:6, ex:"الوقت من ذهب", exEn:"Time is gold"},
+  {ar:"مستقبل", tr:"mustaqbal", en:"Future", type:"noun", book:4, unit:6, ex:"المستقبل مليء بالأمل", exEn:"The future is full of hope"},
+  {ar:"ماضٍ", tr:"māḍin", en:"Past", type:"noun", book:4, unit:6, ex:"لا نستطيع تغيير الماضي", exEn:"We cannot change the past"},
+  {ar:"حاضر", tr:"ḥāḍir", en:"Present (time)", type:"noun", book:4, unit:6, ex:"عش في الحاضر", exEn:"Live in the present"},
+  {ar:"حقيقة", tr:"ḥaqīqa", en:"Truth / Reality", type:"noun", book:4, unit:6, ex:"الحقيقة دائماً تظهر", exEn:"The truth always appears"},
+  {ar:"كذب", tr:"kadhib", en:"Lie / Lying", type:"noun", book:4, unit:6, ex:"الكذب مذموم", exEn:"Lying is blameworthy"},
+  {ar:"أمل", tr:"amal", en:"Hope", type:"noun", book:4, unit:6, ex:"الأمل يعطينا القوة", exEn:"Hope gives us strength"},
+  {ar:"خوف", tr:"khawf", en:"Fear", type:"noun", book:4, unit:6, ex:"الخوف يمنع التقدم", exEn:"Fear prevents progress"},
+  {ar:"شجاعة", tr:"shajāʿa", en:"Courage / Bravery", type:"noun", book:4, unit:6, ex:"الشجاعة فضيلة عظيمة", exEn:"Courage is a great virtue"},
+  {ar:"صبر", tr:"ṣabr", en:"Patience", type:"noun", book:4, unit:6, ex:"الصبر مفتاح الفرج", exEn:"Patience is the key to relief"},
+  {ar:"عقل", tr:"ʿaql", en:"Mind / Intellect", type:"noun", book:4, unit:6, ex:"العقل أغلى ما يملك الإنسان", exEn:"The mind is the most precious thing a person has"},
+  {ar:"قلب", tr:"qalb", en:"Heart", type:"noun", book:4, unit:6, ex:"القلب لا يكذب", exEn:"The heart does not lie"},
+  {ar:"روح", tr:"rūḥ", en:"Soul / Spirit", type:"noun", book:4, unit:6, ex:"الموسيقى تغذي الروح", exEn:"Music nourishes the soul"},
+  {ar:"سعادة", tr:"saʿāda", en:"Happiness", type:"noun", book:4, unit:6, ex:"السعادة في القناعة", exEn:"Happiness is in contentment"},
+  {ar:"حزن", tr:"ḥuzn", en:"Sadness / Grief", type:"noun", book:4, unit:6, ex:"الحزن جزء من الحياة", exEn:"Sadness is part of life"},
+  {ar:"غضب", tr:"ghaḍab", en:"Anger", type:"noun", book:4, unit:6, ex:"الغضب يفسد العقل", exEn:"Anger corrupts the mind"},
+  {ar:"محبة", tr:"maḥabba", en:"Love / Affection", type:"noun", book:4, unit:6, ex:"المحبة تجمع القلوب", exEn:"Love brings hearts together"},
+  {ar:"صداقة", tr:"ṣadāqa", en:"Friendship", type:"noun", book:4, unit:6, ex:"الصداقة الحقيقية نعمة", exEn:"True friendship is a blessing"},
+  {ar:"ثقة", tr:"thiqa", en:"Trust / Confidence", type:"noun", book:4, unit:6, ex:"الثقة أساس العلاقات", exEn:"Trust is the foundation of relationships"},
+  {ar:"نجاح", tr:"najāḥ", en:"Success", type:"noun", book:4, unit:6, ex:"النجاح ثمرة الجهد", exEn:"Success is the fruit of effort"},
+  {ar:"فشل", tr:"fashal", en:"Failure", type:"noun", book:4, unit:6, ex:"الفشل بداية النجاح", exEn:"Failure is the beginning of success"},
+  {ar:"يفكر", tr:"yufakkir", en:"He thinks", type:"verb", book:4, unit:6, ex:"يفكر قبل أن يتكلم", exEn:"He thinks before he speaks"},
+  {ar:"يقرر", tr:"yuqarrir", en:"He decides", type:"verb", book:4, unit:6, ex:"قرر السفر إلى مصر", exEn:"He decided to travel to Egypt"},
+  {ar:"يتذكر", tr:"yatadhakkar", en:"He remembers", type:"verb", book:4, unit:6, ex:"يتذكر أيام الطفولة", exEn:"He remembers childhood days"},
+  {ar:"ينسى", tr:"yansā", en:"He forgets", type:"verb", book:4, unit:6, ex:"لا تنسَ واجبك", exEn:"Don't forget your homework"},
+];
+
+// Sentence Quiz Data
+const SENTENCES = [
+  {words:["أنا","طالب","في","الجامعة","أمريكي"], correct:"أنا طالب أمريكي في الجامعة", en:"I am an American student at the university", book:1},
+  {words:["يذهب","إلى","المسجد","كل","يوم"], correct:"يذهب إلى المسجد كل يوم", en:"He goes to the mosque every day", book:1},
+  {words:["أسرتي","كبيرة","لدي","أخ","وأختان"], correct:"أسرتي كبيرة لدي أخ وأختان", en:"My family is large, I have a brother and two sisters", book:1},
+  {words:["الطقس","حار","في","مصر","جداً"], correct:"الطقس حار جداً في مصر", en:"The weather is very hot in Egypt", book:2},
+  {words:["يشرب","القهوة","العربية","كل","صباح"], correct:"يشرب القهوة العربية كل صباح", en:"He drinks Arabic coffee every morning", book:2},
+  {words:["الأهرام","من","عجائب","الدنيا","القديمة"], correct:"الأهرام من عجائب الدنيا القديمة", en:"The pyramids are among the wonders of the ancient world", book:3},
+  {words:["أتفق","مع","رأيك","في","هذه","المسألة"], correct:"أتفق مع رأيك في هذه المسألة", en:"I agree with your opinion on this matter", book:3},
+];
+
+// Study Schedule — 20 weeks, Books 1-3
+const SCHEDULE = [
+  {wk:1, dates:"Mar 1–7", title:"Greetings & Introductions", book:1, units:"Unit 1", goal:"Master 13 phrases & greetings. Practice: كيف حالك؟ daily. Write your name intro in Arabic."},
+  {wk:2, dates:"Mar 8–14", title:"Countries & Family", book:1, units:"Units 2-3", goal:"Learn 18 family + nationality words. Describe your family in 3 sentences in Arabic."},
+  {wk:3, dates:"Mar 15–21", title:"Places & Daily Life", book:1, units:"Unit 4", goal:"Master 12 location words. Practice saying where you go each day."},
+  {wk:4, dates:"Mar 22–28", title:"Numbers, Time & Review", book:1, units:"Unit 5 + Review", goal:"Learn time expressions. Do 2 quizzes. Review all Book 1 flashcards."},
+  {wk:5, dates:"Mar 29–Apr 4", title:"Actions & Verbs I", book:2, units:"Unit 1", goal:"Master 10 core verbs. Conjugate each in a sentence. Use يذهب، يأكل، يدرس daily."},
+  {wk:6, dates:"Apr 5–11", title:"Description & Adjectives", book:2, units:"Unit 2", goal:"Learn 12 adjectives. Describe 3 places in your city using new vocab."},
+  {wk:7, dates:"Apr 12–18", title:"Food & Shopping", book:2, units:"Unit 3", goal:"Master food vocabulary. Practice ordering food in Arabic. Role-play a market scene."},
+  {wk:8, dates:"Apr 19–25", title:"Travel & Transport", book:2, units:"Unit 4", goal:"Learn travel vocab essential for Egypt trip. Practice: أريد تذكرة إلى القاهرة."},
+  {wk:9, dates:"Apr 26–May 2", title:"Weather & Review", book:2, units:"Unit 5 + Review", goal:"Master weather words. Do matching quiz. Review all Book 2 flashcards twice."},
+  {wk:10, dates:"May 3–9", title:"Education & University", book:3, units:"Unit 1", goal:"Learn 8 academic words. Talk about your studies for 1 minute in Arabic."},
+  {wk:11, dates:"May 10–16", title:"Health & Body", book:3, units:"Unit 2", goal:"Master health vocabulary. Practice: أشعر بالتعب. Know how to say common ailments."},
+  {wk:12, dates:"May 17–23", title:"Professions & Work", book:3, units:"Unit 3", goal:"Learn 8 profession words. Practice: ما مهنتك? Role-play meeting someone at work."},
+  {wk:13, dates:"May 24–30", title:"Egyptian Culture & History", book:3, units:"Unit 4", goal:"Deep dive into Egyptian vocab. Learn Nile, pyramids, civilization. Essential for trip!"},
+  {wk:14, dates:"May 31–Jun 6", title:"Opinions & Discussion", book:3, units:"Unit 5", goal:"Master opinion phrases. Practice: ما رأيك؟ Have a 2-minute discussion in Arabic."},
+  {wk:15, dates:"Jun 7–13", title:"Full Books 1-2 Review", book:"1-2", units:"All", goal:"Do 3 full quizzes. Target 80%+ on all quiz types. Focus on weak areas."},
+  {wk:16, dates:"Jun 14–20", title:"Full Book 3 Review", book:3, units:"All", goal:"Flashcard marathon. Every word, every day. Do sentence builder quiz x2."},
+  {wk:17, dates:"Jun 21–27", title:"Egypt Survival Phrases", book:"all", units:"Practical", goal:"Focus on: directions, ordering food, shopping, asking prices, transport."},
+  {wk:18, dates:"Jun 28–Jul 4", title:"Intensive Speaking Practice", book:"all", units:"Speaking", goal:"Record yourself speaking Arabic daily. Listen back and correct. 10 min/day."},
+  {wk:19, dates:"Jul 5–11", title:"Final Review Sprint", book:"all", units:"All", goal:"Repeat all flashcards daily. Target 90%+ quiz scores. Practice conversation."},
+  {wk:20, dates:"Jul 12–18", title:"Pre-Egypt Prep 🇪🇬", book:"all", units:"All", goal:"You're ready! Practice Egyptian dialect phrases. Pack your Arabic confidence!"},
+  // Book 4 — for after Egypt trip / continued study
+  {wk:21, dates:"Post-trip", title:"Book 4: Grammar Deep Dive", book:4, units:"Unit 1", goal:"Master Arabic grammar terms: فعل، اسم، صفة، مذكر، مؤنث. Understand sentence structure at a higher level."},
+  {wk:22, dates:"Post-trip", title:"Book 4: Environment & Society", book:4, units:"Units 2-3", goal:"Learn 25+ words on environment, politics and society. Read a short Arabic news article."},
+  {wk:23, dates:"Post-trip", title:"Book 4: Literature & Science", book:4, units:"Units 4-5", goal:"Explore Arabic literature vocabulary. Learn about Naguib Mahfouz and Al-Mutanabbi. Study science/tech terms."},
+  {wk:24, dates:"Post-trip", title:"Book 4: Philosophy & Completion", book:4, units:"Unit 6 + Review", goal:"Master abstract vocabulary — emotions, values, time. Complete all 4 books. Full review quiz on everything."},
+];
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+let state = {
+  currentBook: 1,
+  fcBook: 1,
+  quizBook: 1,
+  quizType: 'mc',
+  fcDeck: [],
+  fcIndex: 0,
+  fcFlipped: false,
+  quizQuestions: [],
+  quizIndex: 0,
+  quizCorrect: 0,
+  quizWrong: 0,
+  wordsLearned: parseInt(localStorage.getItem('wordsLearned')||'0'),
+  quizzesDone: parseInt(localStorage.getItem('quizzesDone')||'0'),
+  totalCorrect: parseInt(localStorage.getItem('totalCorrect')||'0'),
+  totalAnswered: parseInt(localStorage.getItem('totalAnswered')||'0'),
+  streak: parseInt(localStorage.getItem('streak')||'0'),
+  lastStudy: localStorage.getItem('lastStudy')||'',
+  vocabFilter: 'all',
+  vocabBookFilter: 'all',
+  matchSelected: null,
+  sentenceWords: [],
+  sentencePlaced: [],
+};
+
+// ══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════════
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  el.scrollTop = 0;
+  if (id === 'home') updateHome();
+  if (id === 'flashcards') initFlashcards();
+  if (id === 'vocab-list') renderVocabList();
+  if (id === 'schedule') renderSchedule();
+  if (id === 'add-vocab') renderCustomWordsList();
+  if (id === 'phrasebook') renderPhrasebook();
+  if (id === 'weak-words') renderWeakWordsScreen();
+}
+
+// ══════════════════════════════════════════════════════════════
+// HOME
+// ══════════════════════════════════════════════════════════════
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (state.lastStudy === today) return;
+  const yesterday = new Date(Date.now()-86400000).toDateString();
+  if (state.lastStudy === yesterday) state.streak++;
+  else if (state.lastStudy !== today) state.streak = 1;
+  state.lastStudy = today;
+  localStorage.setItem('streak', state.streak);
+  localStorage.setItem('lastStudy', today);
+}
+
+function updateHome() {
+  document.getElementById('streak-count').textContent = state.streak;
+  document.getElementById('stat-words').textContent = state.wordsLearned;
+  document.getElementById('stat-quizzes').textContent = state.quizzesDone;
+  const acc = state.totalAnswered > 0 ? Math.round(state.totalCorrect/state.totalAnswered*100)+'%' : '—';
+  document.getElementById('stat-accuracy').textContent = acc;
+
+  const total = VOCAB.filter(v=>v.book<=4).length;
+  const pct = Math.min(100, Math.round(state.wordsLearned/total*100));
+  document.getElementById('main-progress').style.width = pct+'%';
+  document.getElementById('main-progress-label').textContent = 
+    `${state.wordsLearned} / ${total} words mastered • Egypt in ~${weeksToEgypt()} weeks! 🇪🇬`;
+
+  // Egypt countdown
+  const target = new Date('2026-07-20');
+  const daysLeft = Math.max(0, Math.ceil((target - new Date()) / 86400000));
+  const edEl = document.getElementById('egypt-days');
+  if (edEl) edEl.textContent = daysLeft;
+
+  // Weak words count
+  const wc = document.getElementById('weak-word-count');
+  if (wc) wc.textContent = loadWeakWords().length;
+
+  // Daily goal ring
+  incrementDailyProgress();
+  updateDailyGoalProgress();
+}
+
+function weeksToEgypt() {
+  const target = new Date('2026-07-20');
+  const now = new Date();
+  return Math.max(0, Math.round((target-now)/86400000/7));
+}
+
+function setBook(b) {
+  state.currentBook = b;
+  document.querySelectorAll('#home .book-btn').forEach(btn=>btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════════════
+// FLASHCARDS
+// ══════════════════════════════════════════════════════════════
+function setFcBook(b, btn) {
+  state.fcBook = b;
+  document.querySelectorAll('#flashcards .book-btn').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  initFlashcards();
+}
+
+function getDeck(bookFilter) {
+  let deck = getAllVocab().filter(v => bookFilter==='all' ? v.book<=4 : v.book===bookFilter);
+  return shuffle([...deck]);
+}
+
+function initFlashcards() {
+  state.fcDeck = getDeck(state.fcBook==='all'?'all':parseInt(state.fcBook)||state.fcBook);
+  state.fcIndex = 0;
+  state.fcFlipped = false;
+  renderFlashcard();
+  updateDots();
+}
+
+function renderFlashcard() {
+  const card = state.fcDeck[state.fcIndex];
+  if (!card) return;
+  document.getElementById('fc-arabic').textContent = card.ar;
+  document.getElementById('fc-trans').textContent = card.tr;
+  document.getElementById('fc-cat').textContent = capitalize(card.type);
+  document.getElementById('fc-english').textContent = card.en;
+  document.getElementById('fc-example').textContent = card.ex;
+  document.getElementById('fc-example-en').textContent = card.exEn;
+  document.getElementById('fc-current').textContent = state.fcIndex+1;
+  document.getElementById('fc-total').textContent = state.fcDeck.length;
+  // Unit label
+  const unitKey = card.book + '-' + card.unit;
+  const unitTitle = UNIT_TITLES[unitKey] || ('Unit ' + card.unit);
+  const label = card.custom ? '✏️ My Word' : 'Book ' + card.book + ' · Unit ' + card.unit + ' — ' + unitTitle;
+  document.getElementById('fc-unit-label').textContent = label;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fc-controls').style.display = 'none';
+  state.fcFlipped = false;
+  state.currentCard = card;
+}
+
+function flipCard() {
+  if (state.fcFlipped) return;
+  state.fcFlipped = true;
+  document.getElementById('flashcard').classList.add('flipped');
+  document.getElementById('fc-controls').style.display = 'flex';
+}
+
+function rateCard(rating) {
+  updateStreak();
+  const card = state.fcDeck[state.fcIndex];
+  if (rating === 'easy') {
+    state.wordsLearned = Math.min(state.wordsLearned+1, VOCAB.length);
+    localStorage.setItem('wordsLearned', state.wordsLearned);
+    // Remove from weak words if it was there
+    removeWeakWord(card.ar);
+  }
+  if (rating === 'hard') {
+    // Add to weak words
+    addWeakWord(card);
+    state.fcDeck.splice(state.fcIndex, 1);
+    const insertAt = Math.min(state.fcIndex+3, state.fcDeck.length);
+    state.fcDeck.splice(insertAt, 0, card);
+  } else {
+    state.fcIndex++;
+  }
+  if (state.fcIndex >= state.fcDeck.length) {
+    showToast('🎉 Deck complete! Great work!');
+    state.fcIndex = 0;
+  }
+  renderFlashcard();
+  updateDots();
+  updateDailyGoalProgress();
+}
+
+function speakArabic() {
+  const card = state.currentCard;
+  if (!card) return;
+  const utter = new SpeechSynthesisUtterance(card.ar);
+  utter.lang = 'ar-EG';
+  utter.rate = 0.85;
+  // Try to find an Arabic voice
+  const voices = window.speechSynthesis.getVoices();
+  const arVoice = voices.find(v => v.lang.startsWith('ar'));
+  if (arVoice) utter.voice = arVoice;
+  window.speechSynthesis.speak(utter);
+}
+
+// Load voices on init (needed for some browsers)
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+
+function updateDots() {
+  const total = Math.min(state.fcDeck.length, 20);
+  const dots = document.getElementById('fc-dots');
+  dots.innerHTML = '';
+  for (let i=0;i<total;i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i<state.fcIndex?' seen':'') + (i===state.fcIndex?' current':'');
+    dots.appendChild(d);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════════════════════════
+function setQuizBook(b, btn) {
+  state.quizBook = b;
+  document.querySelectorAll('#quiz-select .book-btn').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function startQuiz(type) {
+  state.quizType = type;
+  state.quizCorrect = 0;
+  state.quizWrong = 0;
+  const bookFilter = state.quizBook==='all'?'all':parseInt(state.quizBook)||state.quizBook;
+  let pool = getAllVocab().filter(v => bookFilter==='all' ? v.book<=4 : v.book===bookFilter);
+  state.quizQuestions = shuffle([...pool]).slice(0, type==='match'?8:10);
+  state.quizIndex = 0;
+
+  if (type==='sentence') {
+    let sentPool = SENTENCES.filter(s => bookFilter==='all' ? true : s.book===bookFilter);
+    if (sentPool.length === 0) sentPool = SENTENCES;
+    state.quizQuestions = shuffle([...sentPool]).slice(0,5);
+  }
+
+  const titles = {mc:'Multiple Choice', match:'Match It!', sentence:'Sentence Builder', listen:'Arabic → English'};
+  document.getElementById('quiz-title').textContent = titles[type];
+
+  goTo('quiz');
+  updateQuizScore();
+  renderQuestion();
+}
+
+function updateQuizScore() {
+  const total = state.quizQuestions.length;
+  document.getElementById('q-correct').textContent = state.quizCorrect;
+  document.getElementById('q-wrong').textContent = state.quizWrong;
+  document.getElementById('q-remaining').textContent = Math.max(0, total - state.quizIndex);
+}
+
+function renderQuestion() {
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback-panel';
+  document.getElementById('next-btn').style.display = 'none';
+
+  if (state.quizIndex >= state.quizQuestions.length) {
+    finishQuiz(); return;
+  }
+
+  const container = document.getElementById('quiz-container');
+  const q = state.quizQuestions[state.quizIndex];
+
+  if (state.quizType === 'mc' || state.quizType === 'listen') {
+    renderMCQ(container, q);
+  } else if (state.quizType === 'match') {
+    renderMatchQuiz(container);
+  } else if (state.quizType === 'sentence') {
+    renderSentenceQuiz(container, q);
+  }
+}
+
+function renderMCQ(container, q) {
+  const bookFilter = state.quizBook==='all'?'all':parseInt(state.quizBook)||state.quizBook;
+  let pool = getAllVocab().filter(v => (bookFilter==='all'?v.book<=4:v.book===bookFilter) && v.en!==q.en);
+  const wrongs = shuffle(pool).slice(0,3).map(v=>v.en);
+  const choices = shuffle([q.en, ...wrongs]);
+  const askAr = state.quizType==='listen';
+
+  container.innerHTML = `
+    <div class="quiz-question-card">
+      <div class="q-label">${askAr?'What does this mean?':'Choose the correct meaning'}</div>
+      <div class="q-arabic">${q.ar}</div>
+      <div class="q-transliteration">${q.tr}</div>
+    </div>
+    <div class="choices">
+      ${choices.map(c=>`<button class="choice-btn" onclick="checkMCQ(this,'${c.replace(/'/g,"\\'")}','${q.en.replace(/'/g,"\\'")}')">${c}</button>`).join('')}
+    </div>`;
+}
+
+function checkMCQ(btn, chosen, correct) {
+  document.querySelectorAll('.choice-btn').forEach(b=>b.disabled=true);
+  const isCorrect = chosen === correct;
+  btn.classList.add(isCorrect?'correct':'wrong');
+  if (!isCorrect) document.querySelectorAll('.choice-btn').forEach(b=>{ if(b.textContent===correct) b.classList.add('correct'); });
+  showFeedback(isCorrect, correct);
+  recordAnswer(isCorrect);
+}
+
+function renderMatchQuiz(container) {
+  const q = state.quizQuestions.slice(0,6);
+  const shuffledAr = shuffle([...q]);
+  const shuffledEn = shuffle([...q]);
+  state.matchSelected = null;
+  state.matchMatched = 0;
+  state.matchTotal = q.length;
+
+  container.innerHTML = `
+    <div class="quiz-question-card">
+      <div class="q-label">Match the Arabic words to their meanings</div>
+      <div class="q-prompt">Tap an Arabic word, then tap its English meaning</div>
+    </div>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-label">Arabic</div>
+        ${shuffledAr.map(w=>`<div class="match-item match-arabic" data-ar="${w.ar}" data-en="${w.en}" onclick="selectMatch(this,'ar')">${w.ar}</div>`).join('')}
+      </div>
+      <div class="match-col">
+        <div class="match-col-label">English</div>
+        ${shuffledEn.map(w=>`<div class="match-item match-english" data-ar="${w.ar}" data-en="${w.en}" onclick="selectMatch(this,'en')">${w.en}</div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function selectMatch(el, side) {
+  if (el.classList.contains('matched-correct')) return;
+  if (!state.matchSelected) {
+    document.querySelectorAll('.match-item').forEach(x=>x.classList.remove('selected'));
+    el.classList.add('selected');
+    state.matchSelected = {el, side};
+  } else {
+    const prev = state.matchSelected;
+    if (prev.side === side) {
+      document.querySelectorAll('.match-item').forEach(x=>x.classList.remove('selected'));
+      el.classList.add('selected');
+      state.matchSelected = {el, side};
+      return;
+    }
+    const arEl = side==='en' ? prev.el : el;
+    const enEl = side==='en' ? el : prev.el;
+    const isMatch = arEl.dataset.en === enEl.dataset.en;
+    if (isMatch) {
+      [arEl, enEl].forEach(e=>{ e.classList.remove('selected'); e.classList.add('matched-correct'); e.onclick=null; });
+      state.matchMatched++;
+      recordAnswer(true);
+      if (state.matchMatched >= state.matchTotal) {
+        setTimeout(()=>{ showFeedback(true,''); document.getElementById('next-btn').style.display='block'; }, 300);
+      }
+    } else {
+      [arEl, enEl].forEach(e=>e.classList.add('matched-wrong'));
+      setTimeout(()=>[arEl, enEl].forEach(e=>e.classList.remove('matched-wrong','selected')), 600);
+      recordAnswer(false);
+    }
+    state.matchSelected = null;
+    document.querySelectorAll('.match-item').forEach(x=>x.classList.remove('selected'));
+  }
+}
+
+function renderSentenceQuiz(container, q) {
+  const words = shuffle([...q.words]);
+  state.sentenceWords = [...words];
+  state.sentencePlaced = [];
+
+  container.innerHTML = `
+    <div class="quiz-question-card">
+      <div class="q-label">Build the sentence in Arabic</div>
+      <div class="q-prompt" style="font-size:0.9rem">${q.en}</div>
+    </div>
+    <div class="sentence-builder">
+      <div class="translation-hint">Tap words to arrange them — tap placed words to remove them</div>
+      <div class="sentence-drop" id="sentence-drop">
+        <span class="sentence-placeholder" id="drop-placeholder">Your sentence will appear here...</span>
+      </div>
+      <div class="word-bank" id="word-bank"></div>
+    </div>
+    <button class="next-btn" onclick="checkSentence('${q.correct.replace(/'/g,"\\'")}','${q.en.replace(/'/g,"\\'")}')">Check ✓</button>`;
+
+  renderWordBank();
+}
+
+function renderWordBank() {
+  const bank = document.getElementById('word-bank');
+  if (!bank) return;
+  bank.innerHTML = state.sentenceWords.map((w,i)=>`<div class="word-chip available" onclick="placeWord(${i})">${w}</div>`).join('');
+  const drop = document.getElementById('sentence-drop');
+  const ph = document.getElementById('drop-placeholder');
+  if (ph) ph.style.display = state.sentencePlaced.length===0?'':'none';
+  if (drop) {
+    const existing = [...drop.querySelectorAll('.word-chip.used')];
+    existing.forEach(e=>e.remove());
+    state.sentencePlaced.forEach((w,i)=>{
+      const chip = document.createElement('div');
+      chip.className='word-chip used';
+      chip.textContent=w;
+      chip.onclick=()=>removeWord(i);
+      drop.appendChild(chip);
+    });
+  }
+}
+
+function placeWord(i) {
+  if (state.sentenceWords[i]===null) return;
+  state.sentencePlaced.push(state.sentenceWords[i]);
+  state.sentenceWords[i] = null;
+  renderWordBank();
+}
+
+function removeWord(i) {
+  const word = state.sentencePlaced.splice(i,1)[0];
+  const empty = state.sentenceWords.findIndex(x=>x===null);
+  if (empty>=0) state.sentenceWords[empty]=word;
+  else state.sentenceWords.push(word);
+  renderWordBank();
+}
+
+function checkSentence(correct, en) {
+  const attempt = state.sentencePlaced.join(' ');
+  const isCorrect = attempt.trim() === correct.trim();
+  document.querySelectorAll('.check-btn, .next-btn').forEach(b=>b.style.display='none');
+  showFeedback(isCorrect, correct);
+  recordAnswer(isCorrect);
+  document.getElementById('next-btn').style.display='block';
+  document.getElementById('next-btn').onclick = nextQuestion;
+}
+
+function showFeedback(isCorrect, correctAns) {
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback-panel show ' + (isCorrect?'correct':'incorrect');
+  const msgs = isCorrect ? ['🌟 Excellent!','✨ Perfect!','🎯 Spot on!','💫 Amazing!'] : ['💪 Keep going!','📚 Almost there!','🔄 Try again next time!'];
+  fb.innerHTML = `<div class="feedback-emoji">${isCorrect?'✅':'❌'}</div>
+    <div class="feedback-msg">${msgs[Math.floor(Math.random()*msgs.length)]}</div>
+    ${!isCorrect&&correctAns?`<div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.3rem">Correct answer:</div><div class="feedback-correct-ans">${correctAns}</div>`:''}`;
+  if (state.quizType !== 'match' && state.quizType !== 'sentence') {
+    document.getElementById('next-btn').style.display='block';
+  }
+}
+
+function recordAnswer(isCorrect) {
+  if (isCorrect) state.quizCorrect++;
+  else state.quizWrong++;
+  state.totalCorrect += isCorrect?1:0;
+  state.totalAnswered++;
+  localStorage.setItem('totalCorrect', state.totalCorrect);
+  localStorage.setItem('totalAnswered', state.totalAnswered);
+  updateQuizScore();
+}
+
+function nextQuestion() {
+  if (state.quizType === 'match') {
+    state.quizIndex = state.quizQuestions.length; // done
+  } else {
+    state.quizIndex++;
+  }
+  updateStreak();
+  renderQuestion();
+}
+
+function finishQuiz() {
+  state.quizzesDone++;
+  localStorage.setItem('quizzesDone', state.quizzesDone);
+
+  const total = state.quizCorrect + state.quizWrong;
+  const pct = total > 0 ? Math.round(state.quizCorrect/total*100) : 0;
+  document.getElementById('result-score').textContent = `${state.quizCorrect}/${total}`;
+  document.getElementById('r-correct').textContent = state.quizCorrect;
+  document.getElementById('r-wrong').textContent = state.quizWrong;
+
+  let emoji='', label='';
+  if (pct>=90) { emoji='🏆'; label='Outstanding! يا سلام!'; spawnConfetti(); }
+  else if (pct>=70) { emoji='⭐'; label='Great work! أحسنت!'; }
+  else if (pct>=50) { emoji='💪'; label='Good effort! Keep practicing!'; }
+  else { emoji='📚'; label='Keep studying — you\'ll get there!'; }
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-label').textContent = label;
+  goTo('results');
+}
+
+function restartQuiz() {
+  startQuiz(state.quizType);
+}
+
+// ══════════════════════════════════════════════════════════════
+// VOCAB LIST
+// ══════════════════════════════════════════════════════════════
+const UNIT_TITLES = {
+  '1-1': 'Greetings & Classroom',
+  '1-2': 'Countries & Nationalities',
+  '1-3': 'Family',
+  '1-4': 'Home & Places',
+  '1-5': 'Numbers & Time',
+  '1-6': 'Colors & Descriptions',
+  '2-1': 'Daily Routine & Verbs',
+  '2-2': 'Food & Meals',
+  '2-3': 'Shopping & Money',
+  '2-4': 'Travel & Transport',
+  '2-5': 'Weather & Environment',
+  '2-6': 'Health & Body',
+  '3-1': 'University & Education',
+  '3-2': 'Professions & Work',
+  '3-3': 'Egyptian Culture & Society',
+  '3-4': 'Media & Communication',
+  '3-5': 'Opinions & Discussion',
+  '4-1': 'Grammar & Expression',
+  '4-2': 'Environment & Global Issues',
+  '4-3': 'Politics & Society',
+  '4-4': 'Literature & Arts',
+  '4-5': 'Science & Technology',
+  '4-6': 'Philosophy & Abstract',
+};
+
+function renderVocabList() {
+  const search = document.getElementById('vocab-search').value.toLowerCase();
+  let filtered = getAllVocab().filter(v => {
+    const bookOk = state.vocabBookFilter==='all' ? v.book<=4 : v.book===parseInt(state.vocabBookFilter);
+    const typeOk = state.vocabFilter==='all' || v.type===state.vocabFilter;
+    const searchOk = !search || v.ar.includes(search) || v.en.toLowerCase().includes(search) || v.tr.toLowerCase().includes(search);
+    return bookOk && typeOk && searchOk;
+  });
+
+  const table = document.getElementById('vocab-table');
+
+  if (filtered.length === 0) {
+    table.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)">No words found</div>';
+    return;
+  }
+
+  // If searching or filtering by type, skip grouping — just flat list
+  const isGrouped = !search && state.vocabFilter === 'all';
+
+  if (!isGrouped) {
+    table.innerHTML = filtered.map(v => renderVocabRow(v)).join('');
+    return;
+  }
+
+  // Group by book → unit
+  const groups = {};
+  filtered.forEach(v => {
+    const key = `${v.book}-${v.unit}`;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(v);
+  });
+
+  let html = '';
+  Object.keys(groups).sort((a,b) => {
+    const [ab, au] = a.split('-').map(Number);
+    const [bb, bu] = b.split('-').map(Number);
+    return ab !== bb ? ab - bb : au - bu;
+  }).forEach(key => {
+    const [book, unit] = key.split('-');
+    const title = UNIT_TITLES[key] || `Unit ${unit}`;
+    const words = groups[key];
+    const isCustom = words[0].custom;
+    html += `
+      <div class="vocab-unit-header" onclick="toggleUnit('${key}')">
+        <div class="vuh-left">
+          <span class="vuh-book">${isCustom ? '✏️ My Words' : 'Book ' + book}</span>
+          <span class="vuh-title">${isCustom ? '' : '· Unit ' + unit + ' — ' + title}</span>
+        </div>
+        <div class="vuh-right">
+          <span class="vuh-count">${words.length} words</span>
+          <span class="vuh-arrow" id="arrow-${key}">▼</span>
+        </div>
+      </div>
+      <div class="vocab-unit-body" id="unit-body-${key}">
+        ${words.map(v => renderVocabRow(v)).join('')}
+      </div>`;
+  });
+
+  table.innerHTML = html;
+
+  // By default open the first group, close the rest
+  const allBodies = table.querySelectorAll('.vocab-unit-body');
+  allBodies.forEach((b, i) => {
+    if (i === 0) b.classList.add('open');
+  });
+  const firstArrow = table.querySelector('.vuh-arrow');
+  if (firstArrow) firstArrow.textContent = '▲';
+}
+
+function renderVocabRow(v) {
+  return `
+    <div class="vocab-row">
+      <div class="vocab-ar">${v.ar}</div>
+      <div><div class="vocab-en">${v.en}</div><div class="vocab-trans">${v.tr}</div></div>
+      <div style="font-size:0.8rem;color:var(--muted);font-style:italic;direction:rtl;text-align:right">${v.ex}</div>
+      <div><span class="vocab-badge badge-${v.type}">${capitalize(v.type)}</span></div>
+    </div>`;
+}
+
+function toggleUnit(key) {
+  const body = document.getElementById('unit-body-' + key);
+  const arrow = document.getElementById('arrow-' + key);
+  if (!body) return;
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+}
+
+function filterVocab() { renderVocabList(); }
+
+function filterByType(type, btn) {
+  state.vocabFilter = type;
+  document.querySelectorAll('#vocab-list .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVocabList();
+}
+
+function filterByBook(book, btn) {
+  state.vocabBookFilter = book==='all'?'all':book;
+  document.querySelectorAll('#vocab-list .book-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVocabList();
+}
+
+// ══════════════════════════════════════════════════════════════
+// SCHEDULE
+// ══════════════════════════════════════════════════════════════
+function renderSchedule() {
+  const grid = document.getElementById('schedule-grid');
+  grid.innerHTML = SCHEDULE.map((w,i)=>`
+    <div class="week-card">
+      <div class="week-header" onclick="toggleWeek(${i})">
+        <div class="week-num">${w.wk}</div>
+        <div class="week-info">
+          <div class="week-title">${w.title}</div>
+          <div class="week-dates">📅 ${w.dates}</div>
+        </div>
+        <div class="week-progress-mini">
+          <div class="week-progress-fill" style="width:0%"></div>
+        </div>
+        <div style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem">▼</div>
+      </div>
+      <div class="week-content" id="week-${i}">
+        <div class="unit-tag">📚 Book ${w.book} — ${w.units}</div>
+        <div class="daily-goal">${w.goal}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleWeek(i) {
+  const el = document.getElementById(`week-${i}`);
+  el.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════════
+function shuffle(arr) {
+  for (let i=arr.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+function spawnConfetti() {
+  const colors = ['#C9A84C','#3AADAD','#E87A5A','#5ED4A0','#F5E6C8'];
+  for (let i=0;i<50;i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;top:0;background:${colors[i%colors.length]};animation-delay:${Math.random()*1}s;animation-duration:${2+Math.random()*2}s`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 4000);
+  }
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// CUSTOM VOCABULARY
+// ══════════════════════════════════════════════════════════════
+
+function loadCustomVocab() {
+  try {
+    return JSON.parse(localStorage.getItem('customVocab') || '[]');
+  } catch(e) { return []; }
+}
+
+function saveCustomVocab(words) {
+  localStorage.setItem('customVocab', JSON.stringify(words));
+}
+
+function getAllVocab() {
+  return [...VOCAB, ...loadCustomVocab()];
+}
+
+function addCustomWord() {
+  const ar = document.getElementById('input-arabic').value.trim();
+  const en = document.getElementById('input-english').value.trim();
+  const tr = document.getElementById('input-trans').value.trim();
+  const type = document.getElementById('input-type').value;
+  const book = parseInt(document.getElementById('input-book').value);
+  const unit = parseInt(document.getElementById('input-unit').value) || 1;
+  const ex = document.getElementById('input-example').value.trim();
+  const exEn = document.getElementById('input-example-en').value.trim();
+
+  if (!ar || !en) {
+    showToast('⚠️ Arabic word and English meaning are required');
+    return;
+  }
+
+  const custom = loadCustomVocab();
+  const newWord = {
+    ar, en, tr: tr || ar, type, book, unit,
+    ex: ex || ar,
+    exEn: exEn || en,
+    custom: true,
+    id: Date.now()
+  };
+
+  custom.push(newWord);
+  saveCustomVocab(custom);
+
+  // Clear form
+  ['input-arabic','input-trans','input-english','input-example','input-example-en'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+
+  showToast('✅ Word added to your deck!');
+  renderCustomWordsList();
+
+  // bump wordsLearned counter
+  state.wordsLearned++;
+  localStorage.setItem('wordsLearned', state.wordsLearned);
+}
+
+function deleteCustomWord(id) {
+  let custom = loadCustomVocab();
+  custom = custom.filter(w => w.id !== id);
+  saveCustomVocab(custom);
+  renderCustomWordsList();
+  showToast('🗑️ Word removed');
+}
+
+function renderCustomWordsList() {
+  const custom = loadCustomVocab();
+  const list = document.getElementById('custom-words-list');
+  const banner = document.getElementById('custom-word-count-banner');
+  if (!list) return;
+
+  banner.innerHTML = custom.length > 0
+    ? `<div class="custom-count-badge">✨ ${custom.length} custom word${custom.length!==1?'s':''} in your deck — showing in flashcards & quizzes</div>`
+    : '';
+
+  if (custom.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <div class="empty-state-msg">No custom words yet.<br>Add words from your Bayna Yadayk lessons above — they'll appear in your flashcards and quizzes automatically.</div>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = [...custom].reverse().map(w => `
+    <div class="custom-word-row">
+      <div class="cw-arabic">${w.ar}</div>
+      <div class="cw-info">
+        <div class="cw-english">${w.en}</div>
+        <div class="cw-trans">${w.tr} · Book ${w.book}, Unit ${w.unit} · ${capitalize(w.type)}</div>
+      </div>
+      <button class="cw-delete" onclick="deleteCustomWord(${w.id})">✕ Remove</button>
+    </div>`).join('');
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// WEAK WORDS
+// ══════════════════════════════════════════════════════════════
+function loadWeakWords() {
+  try { return JSON.parse(localStorage.getItem('weakWords') || '[]'); } catch(e) { return []; }
+}
+function saveWeakWords(w) { localStorage.setItem('weakWords', JSON.stringify(w)); }
+
+function addWeakWord(card) {
+  let weak = loadWeakWords();
+  if (!weak.find(w => w.ar === card.ar)) {
+    weak.push({ar:card.ar, en:card.en, tr:card.tr, type:card.type, book:card.book, unit:card.unit||1, ex:card.ex, exEn:card.exEn, weak:true});
+    saveWeakWords(weak);
+  }
+}
+
+function removeWeakWord(ar) {
+  let weak = loadWeakWords().filter(w => w.ar !== ar);
+  saveWeakWords(weak);
+}
+
+// ══════════════════════════════════════════════════════════════
+// DAILY GOAL
+// ══════════════════════════════════════════════════════════════
+function getDailyGoal() {
+  return parseInt(localStorage.getItem('dailyGoal') || '20');
+}
+function setDailyGoal(n) {
+  localStorage.setItem('dailyGoal', n);
+  updateDailyGoalProgress();
+}
+function getDailyProgress() {
+  const today = new Date().toDateString();
+  const saved = JSON.parse(localStorage.getItem('dailyProgress') || '{"date":"","count":0}');
+  if (saved.date !== today) return 0;
+  return saved.count;
+}
+function incrementDailyProgress() {
+  const today = new Date().toDateString();
+  const saved = JSON.parse(localStorage.getItem('dailyProgress') || '{"date":"","count":0}');
+  const count = (saved.date === today ? saved.count : 0) + 1;
+  localStorage.setItem('dailyProgress', JSON.stringify({date:today, count}));
+  return count;
+}
+function updateDailyGoalProgress() {
+  const goal = getDailyGoal();
+  const progress = getDailyProgress();
+  const pct = Math.min(100, Math.round(progress/goal*100));
+  const el = document.getElementById('daily-goal-ring');
+  const txt = document.getElementById('daily-goal-text');
+  const lbl = document.getElementById('daily-goal-label');
+  if (!el) return;
+  const circumference = 2 * Math.PI * 20;
+  const dash = (pct/100) * circumference;
+  el.style.strokeDasharray = `${dash} ${circumference}`;
+  if (txt) txt.textContent = progress + '/' + goal;
+  if (lbl) lbl.textContent = progress >= goal ? '🎉 Goal done!' : 'Daily goal';
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// PHRASEBOOK
+// ══════════════════════════════════════════════════════════════
+const PHRASES = [
+  { cat: "Greetings & Basics", items: [
+    {ar:"مرحبا", tr:"marhaban", en:"Hello"},
+    {ar:"السلام عليكم", tr:"as-salāmu ʿalaykum", en:"Peace be upon you (greeting)"},
+    {ar:"صباح الخير", tr:"ṣabāḥ al-khayr", en:"Good morning"},
+    {ar:"مساء الخير", tr:"masāʾ al-khayr", en:"Good evening"},
+    {ar:"كيف حالك؟", tr:"kayfa ḥālak?", en:"How are you?"},
+    {ar:"بخير الحمد لله", tr:"bi-khayr al-ḥamdu lillāh", en:"Fine, praise be to God"},
+    {ar:"شكراً جزيلاً", tr:"shukran jazīlan", en:"Thank you very much"},
+    {ar:"عفواً", tr:"ʿafwan", en:"You're welcome / Sorry"},
+    {ar:"من فضلك", tr:"min faḍlak", en:"Please"},
+    {ar:"مع السلامة", tr:"maʿa s-salāma", en:"Goodbye"},
+  ]},
+  { cat: "Getting Around", items: [
+    {ar:"أين...؟", tr:"ayna...?", en:"Where is...?"},
+    {ar:"أين المحطة؟", tr:"ayna l-maḥaṭṭa?", en:"Where is the station?"},
+    {ar:"أين الفندق؟", tr:"ayna l-funduq?", en:"Where is the hotel?"},
+    {ar:"أين الحمام؟", tr:"ayna l-ḥammām?", en:"Where is the toilet?"},
+    {ar:"أريد أن أذهب إلى...", tr:"urīd an adhhab ilā...", en:"I want to go to..."},
+    {ar:"توقف هنا من فضلك", tr:"tawwaqaf hunā min faḍlak", en:"Stop here please (taxi)"},
+    {ar:"كم المسافة إلى...؟", tr:"kam al-masāfa ilā...?", en:"How far is it to...?"},
+    {ar:"على اليمين", tr:"ʿalā l-yamīn", en:"On the right"},
+    {ar:"على اليسار", tr:"ʿalā l-yasār", en:"On the left"},
+    {ar:"على طول", tr:"ʿalā ṭūl", en:"Straight ahead"},
+    {ar:"قريب", tr:"qarīb", en:"Near / Close"},
+    {ar:"بعيد", tr:"baʿīd", en:"Far"},
+  ]},
+  { cat: "At the Market (Haggling)", items: [
+    {ar:"بكام ده؟", tr:"bi-kām da?", en:"How much is this? (Egyptian dialect)"},
+    {ar:"كم سعره؟", tr:"kam siʿruh?", en:"How much does it cost?"},
+    {ar:"ده غالي أوي", tr:"da ghālī awi", en:"This is very expensive (Egyptian)"},
+    {ar:"هل عندك خصم؟", tr:"hal ʿindak khaṣm?", en:"Do you have a discount?"},
+    {ar:"بسعر أقل", tr:"bi-siʿr aqall", en:"For a lower price"},
+    {ar:"مش عايز", tr:"mish ʿāyiz", en:"I don't want it (Egyptian)"},
+    {ar:"اشتريه", tr:"ishtarīh", en:"I'll buy it"},
+    {ar:"بس خد ده", tr:"bass khud da", en:"Just take this (Egyptian, making offer)"},
+    {ar:"ممكن أشوف ده؟", tr:"mumkin ashūf da?", en:"Can I see this? (Egyptian)"},
+    {ar:"أعطني الفاتورة", tr:"aʿṭinī l-fātūra", en:"Give me the receipt"},
+  ]},
+  { cat: "Ordering Food", items: [
+    {ar:"قائمة الطعام من فضلك", tr:"qāʾimat aṭ-ṭaʿām min faḍlak", en:"The menu please"},
+    {ar:"أريد...", tr:"urīd...", en:"I want..."},
+    {ar:"بدون لحم", tr:"bidūn laḥm", en:"Without meat"},
+    {ar:"الحساب من فضلك", tr:"al-ḥisāb min faḍlak", en:"The bill please"},
+    {ar:"لذيذ جداً", tr:"ladhīdh jiddan", en:"Very delicious"},
+    {ar:"ماء من فضلك", tr:"māʾ min faḍlak", en:"Water please"},
+    {ar:"بدون سكر", tr:"bidūn sukkar", en:"Without sugar"},
+    {ar:"أكل مصري", tr:"akl miṣrī", en:"Egyptian food"},
+    {ar:"كشري", tr:"kusharī", en:"Koshari (Egyptian dish)"},
+    {ar:"فول وطعمية", tr:"fūl wa-ṭaʿmiyya", en:"Fava beans and falafel"},
+  ]},
+  { cat: "At the Hotel", items: [
+    {ar:"عندي حجز", tr:"ʿindī ḥajz", en:"I have a reservation"},
+    {ar:"أريد غرفة", tr:"urīd ghurfa", en:"I want a room"},
+    {ar:"لكم كم ليلة؟", tr:"li-kam layla?", en:"For how many nights?"},
+    {ar:"ليلة واحدة", tr:"layla wāḥida", en:"One night"},
+    {ar:"المفتاح من فضلك", tr:"al-miftāḥ min faḍlak", en:"The key please"},
+    {ar:"التكييف لا يعمل", tr:"at-takyīf lā yaʿmal", en:"The air conditioning doesn't work"},
+    {ar:"هل الإفطار مشمول؟", tr:"hal al-ifṭār mashmūl?", en:"Is breakfast included?"},
+    {ar:"وقت المغادرة", tr:"waqt al-mughādara", en:"Check-out time"},
+  ]},
+  { cat: "Emergencies", items: [
+    {ar:"ساعدني!", tr:"sāʿidnī!", en:"Help me!"},
+    {ar:"اتصل بالإسعاف", tr:"ittaṣil bil-isʿāf", en:"Call an ambulance"},
+    {ar:"الشرطة", tr:"ash-shurṭa", en:"Police"},
+    {ar:"أنا مريض", tr:"anā marīḍ", en:"I am sick"},
+    {ar:"ضاع جواز سفري", tr:"ḍāʿa jawwāz safarī", en:"My passport is lost"},
+    {ar:"أين أقرب مستشفى؟", tr:"ayna aqrab mustashfā?", en:"Where is the nearest hospital?"},
+    {ar:"لا أفهم", tr:"lā afham", en:"I don't understand"},
+    {ar:"هل تتكلم إنجليزي؟", tr:"hal tatakallam inglīzī?", en:"Do you speak English?"},
+  ]},
+  { cat: "Sightseeing", items: [
+    {ar:"الأهرام", tr:"al-ahrām", en:"The Pyramids"},
+    {ar:"المتحف المصري", tr:"al-matḥaf al-miṣrī", en:"The Egyptian Museum"},
+    {ar:"الأقصر", tr:"al-uqṣur", en:"Luxor"},
+    {ar:"أسوان", tr:"aswān", en:"Aswan"},
+    {ar:"وادي الملوك", tr:"wādī l-mulūk", en:"Valley of the Kings"},
+    {ar:"كم سعر التذكرة؟", tr:"kam siʿr at-tadhkira?", en:"How much is the ticket?"},
+    {ar:"ممكن أخذ صورة؟", tr:"mumkin ākhudh ṣūra?", en:"Can I take a photo?"},
+    {ar:"رائع!", tr:"rāʾiʿ!", en:"Wonderful / Amazing!"},
+  ]},
+];
+
+function renderPhrasebook() {
+  const el = document.getElementById('phrasebook-content');
+  if (!el) return;
+  el.innerHTML = PHRASES.map((section, si) => `
+    <div class="phrase-section">
+      <div class="phrase-section-header" onclick="togglePhraseSection(${si})">
+        <span>${section.cat}</span>
+        <span class="phrase-count">${section.items.length} phrases <span id="pharrow-${si}">▼</span></span>
+      </div>
+      <div class="phrase-section-body" id="phsec-${si}">
+        ${section.items.map(p => `
+          <div class="phrase-row">
+            <div class="phrase-ar">${p.ar}</div>
+            <div class="phrase-info">
+              <div class="phrase-en">${p.en}</div>
+              <div class="phrase-tr">${p.tr}</div>
+            </div>
+            <button class="phrase-listen" onclick="speakPhrase('${p.ar.replace(/'/g,"\'")}')">🔊</button>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  // Open first section
+  const first = document.getElementById('phsec-0');
+  if (first) { first.classList.add('open'); document.getElementById('pharrow-0').textContent = '▲'; }
+}
+
+function togglePhraseSection(i) {
+  const body = document.getElementById('phsec-' + i);
+  const arrow = document.getElementById('pharrow-' + i);
+  if (!body) return;
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
+}
+
+function speakPhrase(text) {
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ar-EG';
+  utter.rate = 0.8;
+  const voices = window.speechSynthesis.getVoices();
+  const arVoice = voices.find(v => v.lang.startsWith('ar'));
+  if (arVoice) utter.voice = arVoice;
+  window.speechSynthesis.speak(utter);
+}
+
+// ══════════════════════════════════════════════════════════════
+// WEAK WORDS SCREEN
+// ══════════════════════════════════════════════════════════════
+function renderWeakWordsScreen() {
+  const el = document.getElementById('weak-words-content');
+  if (!el) return;
+  const weak = loadWeakWords();
+
+  if (weak.length === 0) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🌟</div>
+        <div class="empty-state-msg">No weak words yet!<br>Words you rate <b style="color:#E87A5A">Hard</b> on flashcards will appear here for extra practice.</div>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem">
+      <div class="custom-count-badge">😓 ${weak.length} word${weak.length!==1?'s':''} to practice</div>
+      <button class="next-btn" style="margin:0;padding:0.6rem 1.4rem;font-size:0.85rem" onclick="drillWeakWords()">Drill These Words →</button>
+    </div>
+    <div class="custom-words-list">
+      ${weak.map(w => `
+        <div class="custom-word-row">
+          <div class="cw-arabic">${w.ar}</div>
+          <div class="cw-info">
+            <div class="cw-english">${w.en}</div>
+            <div class="cw-trans">${w.tr}</div>
+          </div>
+          <button class="cw-delete" onclick="removeWeakWord('${w.ar.replace(/'/g,"\'")}');renderWeakWordsScreen();showToast('✅ Removed!')" title="Mark as learned">✓ Got it</button>
+        </div>`).join('')}
+    </div>`;
+}
+
+function drillWeakWords() {
+  const weak = loadWeakWords();
+  if (weak.length === 0) { showToast('No weak words to drill!'); return; }
+  state.fcDeck = shuffle([...weak]);
+  state.fcIndex = 0;
+  state.fcFlipped = false;
+  goTo('flashcards');
+  renderFlashcard();
+  updateDots();
+  showToast('💪 Drilling your ' + weak.length + ' weak words!');
+}
+
+function startWeakWordsSession() {
+  const weak = loadWeakWords();
+  if (weak.length === 0) { showToast('No weak words yet — keep studying!'); return; }
+  drillWeakWords();
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+updateStreak();
+updateHome();
+</script>
+</div><!-- end app-wrapper -->
+</body>
+</html>
